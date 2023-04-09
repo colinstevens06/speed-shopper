@@ -1,0 +1,20 @@
+label {
+	font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 0.5rem 0;
+}
+
+html {
+	min-height: 100%;
+	background-color: $grocery-blue;
+	background-image: linear-gradient(to bottom right, $grocery-blue-top-left, $grocery-blue-bottom-right);
+	font-size: 16px;
+}
+
