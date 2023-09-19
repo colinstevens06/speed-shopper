@@ -1,69 +1,90 @@
-import { GroceryStoreName, PrismaClient } from "@prisma/client";
+import { GroceryStoreName } from '../db/models/grocery-store-name';
+import { useVerifyCache } from '@cache/init-verify-cache';
+import { CacheKeys } from '@models/cache';
+import NodeCache from 'node-cache';
 
-export const useGroceryStoreNameController = () => {
-  const prisma = new PrismaClient();
+export const useGroceryStoreNameController = (cache: NodeCache) => {
+	const { clearCacheKey, verifyCacheInController } = useVerifyCache(cache);
 
-  /**
-   * POST
-   * @param name string - ie Harris Teeter
-   * @returns
-   */
-  const createGroceryStoreName = async (name: string) => {
-    const newGroceryStoreName = await prisma.groceryStoreName.create({
-      data: {
-        name: name,
-      },
-    });
+	/**
+	 * POST
+	 * @param name string - ie Harris Teeter
+	 * @returns
+	 */
+	const createGroceryStoreName = async (name: string) => {
+		let newGroceryStoreName: GroceryStoreName | undefined = undefined;
 
-    return newGroceryStoreName;
-  };
+		try {
+			newGroceryStoreName = await GroceryStoreName.create({
+				name,
+				updateby: 'admin'
+			});
+			// Clear the cache for this so new data is fetched next time
+			await clearCacheKey(CacheKeys.AllGroceryStoreNames);
+		} catch (error) {
+			console.error(error);
+		}
 
-  /**
-   * PUT
-   * @param id number - unique id
-   * @param name string - ie Harris Teeter
-   * @returns
-   */
-  const updateGroceryStoreName = async (id: number, name: string) => {
-    const newGroceryStoreName = await prisma.groceryStoreName.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name: name,
-      },
-    });
+		return newGroceryStoreName;
+	};
 
-    return newGroceryStoreName;
-  };
+	/**
+	 * GET unique groceryStoreName
+	 * @param name string - Harris Teeter
+	 * @returns GroceryStoreName
+	 */
+	const findGroceryStoreName = async (id: number) => {
+		let groceryStoreName: GroceryStoreName | null = null;
+		try {
+			groceryStoreName = await GroceryStoreName.findByPk(id);
+		} catch (error) {
+			console.error(error);
+		}
+		return groceryStoreName;
+	};
 
-  /**
-   * GET unique groceryStoreName
-   * @param name string - Harris Teeter
-   * @returns GroceryStoreName
-   */
-  const findGroceryStoreName = async (name: string) => {
-    const groceryStoreName = await prisma.groceryStoreName.findUnique({
-      where: {
-        name: name,
-      },
-    });
+	/**
+	 * GET allGroceryStoreNames
+	 */
+	const findManyGroceryStoreNames = async () => {
+		let allGroceryNames = [] as GroceryStoreName[];
+		try {
+			allGroceryNames = await GroceryStoreName.findAll();
+		} catch (error: any) {
+			console.error(error);
+		}
+		return allGroceryNames;
+	};
 
-    return groceryStoreName;
-  };
+	/**
+	 * PUT
+	 * @param id number - unique id
+	 * @param name string - ie Harris Teeter
+	 * @returns
+	 */
+	const updateGroceryStoreName = async (id: number, name: string) => {
+		let groceryStoreName = await findGroceryStoreName(id);
 
-  /**
-   * GET allGroceryStoreNames
-   */
-  const findManyGroceryStoreNames = async () => {
-    const allGroceryStoreNames = await prisma.groceryStoreName.findMany();
-    return allGroceryStoreNames;
-  };
+		try {
+			if (groceryStoreName) {
+				await groceryStoreName.set({ name });
+				const savedName = await groceryStoreName.save();
+				if (savedName) {
+					// Clear the cache for this so new data is fetched next time
+					await clearCacheKey(CacheKeys.AllGroceryStoreNames);
+					groceryStoreName = savedName;
+				}
+			}
+		} catch (error) {
+			console.error(error);
+		}
+		return groceryStoreName;
+	};
 
-  return {
-    createGroceryStoreName,
-    findGroceryStoreName,
-    findManyGroceryStoreNames,
-    updateGroceryStoreName,
-  };
+	return {
+		createGroceryStoreName,
+		findGroceryStoreName,
+		findManyGroceryStoreNames,
+		updateGroceryStoreName
+	};
 };

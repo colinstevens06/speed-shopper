@@ -1,74 +1,84 @@
-import { useGroceryStoreNameController } from "../../controllers/grocery-store-name-controller";
-import { GroceryStoreName } from "@prisma/client";
-import { Express, Request, Response } from "express";
+import { GroceryStoreName } from '../../db/models/grocery-store-name';
+import { useGroceryStoreNameController } from '../../controllers/grocery-store-name-controller';
+import { Express, Request, Response } from 'express';
+import NodeCache from 'node-cache';
+import { useVerifyCache } from '@cache/init-verify-cache';
 
-export const useGroceryStoreNameApi = (app: Express) => {
-  const {
-    createGroceryStoreName,
-    findGroceryStoreName,
-    findManyGroceryStoreNames,
-    updateGroceryStoreName,
-  } = useGroceryStoreNameController();
+export const useGroceryStoreNameApi = (app: Express, cache: NodeCache) => {
+	const { createGroceryStoreName, findGroceryStoreName, findManyGroceryStoreNames, updateGroceryStoreName } =
+		useGroceryStoreNameController(cache);
 
-  const baseUrl = "/api/grocery-store-names";
+	const { verifyCacheInApi } = useVerifyCache(cache);
 
-  /**
-   * Get groceryStoreName by ID
-   * @returns null if not found
-   */
-  const getGroceryStoreName = () => {
-    return app.get(`${baseUrl}/:name`, async (req: Request, res: Response) => {
-      const name = await findGroceryStoreName(req.params.name);
-      res.send(name);
-    });
-  };
+	const baseUrl = '/api/grocery-store-names';
 
-  /**
-   * GET all addresses
-   * @returns array addresses
-   */
-  const getAllGroceryStoreNames = () => {
-    return app.get(`${baseUrl}`, async (req: Request, res: Response) => {
-      const allGroceryStoreNames = await findManyGroceryStoreNames();
-      res.send(allGroceryStoreNames);
-    });
-  };
+	/**
+	 * Get groceryStoreName by ID
+	 * @returns null if not found
+	 */
+	const getGroceryStoreName = () => {
+		return app.get(`${baseUrl}/:id`, async (req: Request, res: Response) => {
+			const name = await findGroceryStoreName(parseInt(req.params.id));
+			res.send(name);
+		});
+	};
 
-  /**
-   * POST will include a name - Harris Teeter
-   */
-  const postGroceryStoreName = () => {
-    return app.post(`${baseUrl}`, async (req: Request, res: Response) => {
-      const name = req.body.name;
-      let newName: GroceryStoreName;
+	/**
+	 * GET all addresses
+	 * @returns array addresses
+	 */
+	const getAllGroceryStoreNames = () => {
+		return app.get(`${baseUrl}`, verifyCacheInApi, async (req: Request, res: Response) => {
+			let allGroceryStoreNames: GroceryStoreName[] = [];
+			try {
+				allGroceryStoreNames = await findManyGroceryStoreNames();
+				// console.log(allGroceryStoreNames);
+				cache.set(req.url, allGroceryStoreNames);
+				res.send(allGroceryStoreNames);
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	};
 
-      const nameExists = await findGroceryStoreName(name);
-      if (!nameExists) {
-        newName = await createGroceryStoreName(name);
-        res.send(newName);
-      } else {
-        res.send("Name already exists.");
-      }
-    });
-  };
+	/**
+	 * POST will include a name - Harris Teeter
+	 */
+	const postGroceryStoreName = () => {
+		return app.post(`${baseUrl}`, async (req: Request, res: Response) => {
+			console.log('Attempting a POST for Grocery Store Name');
+			console.log('body', req.body);
+			const groceryStoreName = req.body.name;
 
-  /**
-   * PUT will include a name - Harris Teeter
-   */
-  const putGroceryStoreName = () => {
-    return app.put(`${baseUrl}/:id`, async (req: Request, res: Response) => {
-      const id = parseInt(req.params.id);
-      const name = req.body.name;
+			let newName: GroceryStoreName | undefined;
+			try {
+				newName = await createGroceryStoreName(groceryStoreName);
+				res.send(newName);
+			} catch (error) {
+				console.error(error);
+				res.send('There was an error creating the grocery store name. Please try again later.');
+			}
+		});
+	};
 
-      const updatedGroceryStoreName = await updateGroceryStoreName(id, name);
+	/**
+	 * PUT will include a name - Harris Teeter
+	 */
+	const putGroceryStoreName = () => {
+		return app.put(`${baseUrl}/:id`, async (req: Request, res: Response) => {
+			const id = parseInt(req.params.id);
+			const name = req.body.name;
 
-      res.send(updatedGroceryStoreName);
-    });
-  };
+			const updatedGroceryStoreName = await updateGroceryStoreName(id, name);
 
-  getAllGroceryStoreNames();
-  getGroceryStoreName();
-  putGroceryStoreName();
+			res.send(updatedGroceryStoreName);
+		});
+	};
 
-  return { getAllGroceryStoreNames, getGroceryStoreName, postGroceryStoreName };
+	getAllGroceryStoreNames();
+	getGroceryStoreName();
+	putGroceryStoreName();
+	postGroceryStoreName();
+
+	return { getAllGroceryStoreNames, getGroceryStoreName, postGroceryStoreName };
 };

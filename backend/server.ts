@@ -1,15 +1,45 @@
 import express from 'express';
+import { useApiRoutes } from './routes/use-api-routes';
+import cors from 'cors';
+import NodeCache from 'node-cache';
+import { useVerifyCache } from '@cache/init-verify-cache';
+
+const cache = new NodeCache({ stdTTL: 900 }); // 15 minutes
+const dev = process.env.NODE_ENV === 'development'; // TODO: figure this out
+console.log(dev);
+
+// import 'dotenv/config';
+// import { config as configDotenv } from 'dotenv';
+// import { resolve } from 'path';
 
 const app = express();
 
-const port = 8080; // default port to listen
+// app.use(cors({ origin: 'http://127.0.0.1:5173' }));
+app.use(cors());
 
-// define a route handler for the default home page
-app.get('/', (req: any, res: any) => {
-	res.send('Hello world! I is my new app.');
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: false })); // for parsing application/x-www-form-urlencoded
+
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	next();
 });
 
-// start the Express server
+// configDotenv({ path: resolve(__dirname, './.env') });
+
+// process.env.
+
+const port = 3000;
+
+// Hello world
+app.get('/', (req, res) => {
+	res.send('Hello World!');
+});
+
+useApiRoutes(app, cache);
+
+// cache.initCache();
+
 app.listen(port, () => {
-	console.log(`server started at http://localhost:${port}`);
+	console.log(`App listening on port ${port}`);
 });

@@ -1,18 +1,21 @@
 import {
-  useAddressApi,
-  useAisleApi,
-  useGroceryItemApi,
-  useGroceryItemCategoryApi,
-  useGroceryStoreApi,
-  useGroceryStoreNameApi,
-} from "./api";
-import { Express } from "express";
+	useAddressApi,
+	useAisleApi,
+	useGroceryItemApi,
+	useGroceryItemCategoryApi,
+	useGroceryStoreApi,
+	useGroceryStoreNameApi,
+	useNodeCache
+} from './api';
+import { Express } from 'express';
+import NodeCache from 'node-cache';
 
-export const useApiRoutes = (app: Express) => {
-  useAddressApi(app);
-  useAisleApi(app);
-  useGroceryItemApi(app);
-  useGroceryItemCategoryApi(app);
-  useGroceryStoreNameApi(app);
-  useGroceryStoreApi(app);
+export const useApiRoutes = (app: Express, cache: NodeCache) => {
+	useAddressApi(app, cache);
+	useAisleApi(app, cache);
+	useNodeCache(app, cache);
+	useGroceryItemApi(app, cache);
+	useGroceryItemCategoryApi(app, cache);
+	useGroceryStoreNameApi(app, cache);
+	useGroceryStoreApi(app, cache);
 };

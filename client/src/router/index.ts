@@ -5,16 +5,21 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-			name: 'home',
-			component: () => import('./views/home.vue')
+			name: 'adminHome',
+			component: () => import('@router/views/admin-home.vue')
 		},
 		{
 			path: '/add-grocery-store',
 			name: 'addGroceryStore',
-			component: () => import('./views/add-grocery-store.vue')
+			component: () => import('@router/views/add-grocery-store.vue')
+		},
+		{
+			path: '/add-grocery-item',
+			name: 'addGroceryItem',
+			component: () => import('@router/views/add-grocery-store-item.vue')
 		},
 
-		{ path: '/:catchAll(.*)', component: () => import('./views/_404.vue') }
+		{ path: '/:catchAll(.*)', component: () => import('@views/_404.vue') }
 	]
 });
 

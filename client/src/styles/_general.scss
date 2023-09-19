@@ -13,8 +13,37 @@ h6 {
 
 html {
 	min-height: 100%;
-	background-color: $grocery-blue;
-	background-image: linear-gradient(to bottom right, $grocery-blue-top-left, $grocery-blue-bottom-right);
+	background-color: $html-background-color;
+	background-image: linear-gradient(to bottom right, $background-gradient-top-left, $background-gradient-bottom-right);
 	font-size: 16px;
 }
 
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+p,
+ul,
+div,
+span,
+a {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p {
+	line-height: 1.5;
+}
+
+ul {
+	padding-left: 2rem;
+	li {
+		padding-bottom: 0.25rem;
+	}
+}
+
+.invalid-message {
+	font-size: small;
+	color: rgba(155, 0, 0, 0.95);
+}

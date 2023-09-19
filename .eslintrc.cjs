@@ -12,7 +12,9 @@ module.exports = {
 		'@vue/eslint-config-prettier'
 	],
 	rules: {
-		'@typescript-eslin/no-var-requires': 'off',
+		'@typescript-eslint/no-var-requires': 'off',
+		'no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': 'off',
 		'vue/max-attrivutes-per-line': 'off',
 		'vue/no-v-model-argument': 'off',
 		'vue/multi-word-component-names': 'off',
@@ -22,7 +24,10 @@ module.exports = {
 		'generator-star-spacing': 0,
 		'space-before-function-paren': ['error', { anonymous: 'always', named: 'never', asyncArrow: 'always' }],
 		// Enable vue/scrip-setup-uses-vars rule
-		'vue/script-setup-uses-vars': 'error'
+		'vue/script-setup-uses-vars': 'error',
+		'no-irregular-whitespace': 0,
+		semi: [1, 'always'],
+		'no-debugger': 'off'
 	},
 	parserOptions: {
 		ecmaVersion: 'latest'

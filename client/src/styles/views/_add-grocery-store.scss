@@ -4,5 +4,10 @@
 		margin-bottom: 0.25rem;
 		margin-left: 2px;
 	}
-}
 
+	&__names-list {
+		.p-button {
+			display: contents;
+		}
+	}
+}

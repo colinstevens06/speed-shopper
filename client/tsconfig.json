@@ -1,23 +1,21 @@
 {
 	"extends": "@vue/tsconfig/tsconfig.web.json",
-	"include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+	"include": ["env.d.ts", "src/**/*.ts", "src/**/*.vue", "../types/*.d.ts"],
 	"compilerOptions": {
-		"baseUrl": "src",
+		"baseUrl": ".",
 		"outDir": "dist",
+    "types": ["vite/client"],
 		"paths": {
-			"@/*": ["*"],
-			"@components/*": ["components/*"],
-			"@models/*": ["models/*"],
-			"@router/*": ["router/*"],
-			"@styles/*": ["styles/*"],
-			"@views/*": ["router/views/*"]
+      "@components/*": ["src/components/*"], 
+      "@composables/*": ["src/composables/*"], 
+      "@models/*": ["src/models/*"], 
+      "@router/*": ["src/router/*"], 
+      "@services/*": ["src/services/*"], 
+      "@store/*": ["src/store/*"], 
+      "@styles/*": ["src/styles/*"],
+			"@views/*": ["src/router/views/*"],
+			"@utils/*": ["src/utils/*"]
 		}
 	},
-
-	"references": [
-		{
-			"path": "./tsconfig.config.json"
-		}
-	]
 }
 

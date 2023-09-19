@@ -1,69 +1,78 @@
-import { useGroceryItemController } from "../../controllers/grocery-item-controller";
-import { Express, Request, Response } from "express";
+import { useVerifyCache } from '@cache/init-verify-cache';
+import { useGroceryItemController } from '../../controllers/grocery-item-controller';
+import { Express, Request, Response } from 'express';
+import NodeCache from 'node-cache';
+import { GroceryItem } from '@db/models/grocery-item';
 
-export const useGroceryItemApi = (app: Express) => {
-  const {
-    createGroceryItem,
-    findGroceryItem,
-    findManyGroceryItems,
-    updateGroceryItem,
-  } = useGroceryItemController();
+export const useGroceryItemApi = (app: Express, cache: NodeCache) => {
+	const { createGroceryItem, findGroceryItem, findManyGroceryItems, updateGroceryItem } =
+		useGroceryItemController(cache);
 
-  const baseUrl = "/api/grocery-items";
+	const { verifyCacheInApi } = useVerifyCache(cache);
 
-  /**
-   * Get groceryStoreName by ID
-   * @returns null if not found
-   */
-  const getGroceryItem = () => {
-    return app.get(`${baseUrl}/:id`, async (req: Request, res: Response) => {
-      const groceryItem = await findGroceryItem(parseInt(req.params.id));
-      res.send(groceryItem);
-    });
-  };
+	const baseUrl = '/api/grocery-items';
 
-  /**
-   * GET all addresses
-   * @returns array addresses
-   */
-  const getAllGroceryItems = () => {
-    return app.get(`${baseUrl}`, async (req: Request, res: Response) => {
-      const allGroceryItems = await findManyGroceryItems();
-      res.send(allGroceryItems);
-    });
-  };
+	/**
+	 * Get groceryStoreName by ID
+	 * @returns null if not found
+	 */
+	const getGroceryItem = () => {
+		return app.get(`${baseUrl}/:id`, async (req: Request, res: Response) => {
+			const groceryItem = await findGroceryItem(parseInt(req.params.id));
+			res.send(groceryItem);
+		});
+	};
 
-  /**
-   * POST will include a
-   */
-  const postGroceryItem = () => {
-    return app.post(`${baseUrl}`, async (req: Request, res: Response) => {
-      const name = req.body.name;
-      try {
-        const newGroceryItem = createGroceryItem(name);
-        res.send(newGroceryItem);
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  };
+	/**
+	 * GET all addresses
+	 * @returns array addresses
+	 */
+	const getAllGroceryItems = async () => {
+		return app.get(`${baseUrl}`, verifyCacheInApi, async (req: Request, res: Response) => {
+			let allGroceryItems: GroceryItem[] = [];
+			try {
+				allGroceryItems = await findManyGroceryItems();
+				cache.set(req.url, allGroceryItems);
+				res.send(allGroceryItems);
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	};
 
-  /**
-   * POST will include a
-   */
-  const putGroceryItem = () => {
-    return app.put(`${baseUrl}/:id`, async (req: Request, res: Response) => {
-      const id = parseInt(req.params.id);
-      const name = req.body.name;
+	/**
+	 * POST will include a
+	 */
+	const postGroceryItem = () => {
+		return app.post(`${baseUrl}`, async (req: Request, res: Response) => {
+			const name = req.body.name;
+			const id = req.body.id;
+			try {
+				const newGroceryItem = await createGroceryItem(name, id);
+				res.send(newGroceryItem);
+			} catch (error) {
+				console.error(error);
+			}
+		});
+	};
 
-      const updatedGroceryItem = await updateGroceryItem(id, name);
-      res.send(updatedGroceryItem);
-    });
-  };
+	/**
+	 * POST will include a
+	 */
+	const putGroceryItem = () => {
+		return app.put(`${baseUrl}/:id`, async (req: Request, res: Response) => {
+			const id = parseInt(req.params.id);
+			const name = req.body.name;
 
-  getAllGroceryItems();
-  getGroceryItem();
-  putGroceryItem();
+			const updatedGroceryItem = await updateGroceryItem(id, name);
+			res.send(updatedGroceryItem);
+		});
+	};
 
-  return { getAllGroceryItems, getGroceryItem, postGroceryItem };
+	getAllGroceryItems();
+	getGroceryItem();
+	putGroceryItem();
+	postGroceryItem();
+
+	return { getAllGroceryItems, getGroceryItem, postGroceryItem };
 };

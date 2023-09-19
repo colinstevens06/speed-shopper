@@ -1,6 +1,7 @@
-@import './primeflex-variables';
 @import './variables';
-@import './layout';
+@import './primeflex-variables';
 @import './general';
+@import './layout/layout';
+@import './layout/nav';
 // Views
 @import './views/add-grocery-store';

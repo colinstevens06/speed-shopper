@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Bilbo+Swash+Caps&family=Permanent+Marker&display=swap');
+
+nav {
+	background-color: $html-background-color;
+	background-image: linear-gradient(to bottom right, $grocery-blue-top-left, $grocery-blue-bottom-right);
+
+	h1 {
+		font-family: 'Bilbo Swash Caps', cursive;
+		color: rgba(255, 255, 255, 0.95);
+
+		a {
+			font-family: 'Bilbo Swash Caps', cursive;
+			color: rgba(255, 255, 255, 0.95);
+			text-decoration: none;
+		}
+	}
+}
