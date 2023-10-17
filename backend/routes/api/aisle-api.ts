@@ -3,6 +3,7 @@ import { useAisleController } from '../../controllers/aisle-controller';
 import { Express, Request, Response } from 'express';
 import { useVerifyCache } from '@cache/init-verify-cache';
 import { Aisle } from '@db/models/aisle';
+import { ResultType, initPostResult } from '@models/dto';
 
 export const useAisleApi = (app: Express, cache: NodeCache) => {
 	const { createAisle, findAisle, findManyAisles, updateAisle } = useAisleController(cache);
@@ -49,8 +50,16 @@ export const useAisleApi = (app: Express, cache: NodeCache) => {
 			let groceryItemCategoryIds = [...req.body.groceryItemCategoryIds];
 			groceryItemCategoryIds = groceryItemCategoryIds.map(item => parseInt(item));
 			try {
+				const postResult = initPostResult();
+
 				const newAisle = await createAisle(name, groceryStoreId, aisleOrder, groceryItemCategoryIds);
-				res.send(newAisle);
+
+				if (newAisle) {
+					postResult.resultType = ResultType.Success;
+					postResult.value = newAisle;
+				}
+
+				res.send(postResult);
 			} catch (error) {
 				console.error(error);
 			}

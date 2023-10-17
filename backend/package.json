@@ -25,14 +25,11 @@
 		"client"
 	],
 	"scripts": {
-		"start-server": "node .",
 		"format": "prettier --write  \"./**/*.{vue,js,ts}\"",
 		"build": "yarn tsc",
-		"start": "node dist/server.js",
-		"predev": "yarn build",
 		"dev": "concurrently \"yarn tsc --watch\" \"nodemon -q dist/server.js\"",
 		"prestartserver": "node -e \"console.log('Running yarn tsc...')\" && yarn tsc",
-		"startserver": "yarn prestartserver && node -e \"console.log('Building server...')\" && ts-node ./build/server.js"
+		"startserver": "yarn prestartserver && node -e \"console.log('Building server...')\" && node --inspect -r ts-node/register ./build/server.js"
 	},
 	"private": true,
 	"_moduleAliases": {

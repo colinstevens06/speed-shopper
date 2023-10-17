@@ -34,6 +34,9 @@ export const useAddressController = (cache: NodeCache) => {
 	const findAddressByAddressCityState = async (address: Address): Promise<Address | null> => {
 		let searchResult: Address | null = null;
 		try {
+			console.log(
+				`\n****** Attempting findAddressByAddressCityState for ${address.addressLineOne} ${address.city} ${address.state}`
+			);
 			searchResult = await Address.findOne({
 				where: {
 					addressLineOne: address.addressLineOne,

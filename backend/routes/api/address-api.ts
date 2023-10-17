@@ -3,6 +3,7 @@ import { useAddressController } from '../../controllers/address-controller';
 import { Express, Request, Response } from 'express';
 import { useVerifyCache } from '@cache/init-verify-cache';
 import { Address } from '@db/models/address';
+import { ResultType, initPostResult } from '@models/dto';
 
 export const useAddressApi = (app: Express, cache: NodeCache) => {
 	const { createAddress, findAddress, findManyAddresses, updateAddress } = useAddressController(cache);
@@ -57,8 +58,15 @@ export const useAddressApi = (app: Express, cache: NodeCache) => {
 			const address = req.body.address;
 
 			try {
+				const postResult = initPostResult();
 				const newAddress = await createAddress(address);
-				res.send(newAddress);
+
+				if (newAddress) {
+					postResult.resultType = ResultType.Success;
+					postResult.value = newAddress;
+				}
+
+				res.send(postResult);
 			} catch (error) {
 				console.error(error);
 			}

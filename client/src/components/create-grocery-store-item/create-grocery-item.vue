@@ -47,6 +47,7 @@
 	import { computed, ref } from 'vue';
 	import InputText from 'primevue/inputtext';
 	import Button from 'primevue/button';
+	import { ResultType } from '@models/dto';
 
 	const { newCategory, newGroceryItem, categoryOptions, groceryItemOptions, createGroceryStoreItemStore } =
 		useCreateGroceryItemStoreState();
@@ -92,7 +93,7 @@
 			newGroceryItem.value.groceryItemCategoryId as number
 		);
 
-		if (response) {
+		if (response.resultType === ResultType.Success) {
 			messageStore.setSuccessMessage('Grocery item saved successfully');
 			createGroceryStoreItemStore.resetNewGroceryItem();
 			newGroceryItem.value.groceryItemCategoryId = itemCategorySelection.value;

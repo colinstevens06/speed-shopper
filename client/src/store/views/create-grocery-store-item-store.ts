@@ -1,3 +1,4 @@
+import { ResultType, type PostResult } from '@models/dto';
 import { initCreateGroceryStoreItemState, type CreateGroceryStoreItemState } from '@models/store';
 import {
 	initGroceryItemCategory,
@@ -40,21 +41,21 @@ class CreateGroceryStoreItemStore extends Store<CreateGroceryStoreItemState> {
 	}
 
 	// POSTS
-	async postNewCategory(name: string): Promise<GroceryItemCategory> {
+	async postNewCategory(name: string): Promise<PostResult<GroceryItemCategory>> {
 		const response = await groceryItemCategoryService.create(name);
-		if (response) {
+		if (response.resultType === ResultType.Success) {
 			// Update the state
-			this.state.categoryOptions = [...this.state.categoryOptions, response];
+			this.state.categoryOptions = [...this.state.categoryOptions, response.value];
 		}
 		return response;
 	}
 
-	async postNewGroceryItem(name: string, id: number): Promise<GroceryItem> {
+	async postNewGroceryItem(name: string, id: number): Promise<PostResult<GroceryItem>> {
 		const response = await groceryStoreService.postGroceryItem(name, id);
 
-		if (response) {
+		if (response.resultType === ResultType.Success) {
 			// Update the state
-			this.state.groceryItemOptions = [...this.state.groceryItemOptions, response];
+			this.state.groceryItemOptions = [...this.state.groceryItemOptions, response.value];
 			this.state.groceryItemOptions.sort((a, b) => a.name.localeCompare(b.name));
 		}
 		return response;

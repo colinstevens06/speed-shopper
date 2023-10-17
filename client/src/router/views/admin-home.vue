@@ -20,6 +20,11 @@
 	import Layout from '../layouts/main.vue';
 	import Button from 'primevue/button';
 	import { messageStore } from '@store/message-store';
+	import { useRouter } from 'vue-router';
+	import { initUserFromClerk } from '@models/user';
+	import { authStore } from '@store/auth-store';
+
+	const router = useRouter();
 
 	const clearAllCache = async () => {
 		const response = await contextStore.clearServerSideCache();

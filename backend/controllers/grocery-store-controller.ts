@@ -119,42 +119,45 @@ export const useGroceryStoreControllers = (nodeCache: NodeCache) => {
 		buildAisles: boolean = true
 	): Promise<GroceryStoreDto> => {
 		const newGroceryStoreDto = initGroceryStoreDto();
-		// Find address and name
-		const addresses = (await verifyCacheInController(CacheKeys.AllAddresses, findManyAddresses)) as Address[];
+		try {
+			// Find address and name
+			const addresses = (await verifyCacheInController(CacheKeys.AllAddresses, await findManyAddresses)) as Address[];
 
-		const address = addresses.find(address => address.addressId === groceryStore.addressId);
+			const address = addresses.find(address => address.addressId === groceryStore.addressId);
 
-		const groceryStoreNames = (await verifyCacheInController(
-			CacheKeys.AllGroceryStoreNames,
-			findManyGroceryStoreNames
-		)) as GroceryStoreName[];
+			const groceryStoreNames = (await verifyCacheInController(
+				CacheKeys.AllGroceryStoreNames,
+				findManyGroceryStoreNames
+			)) as GroceryStoreName[];
 
-		const groceryStoreName = groceryStoreNames.find(
-			name => name.groceryStoreNameId === groceryStore.groceryStoreNameId
-		);
-		// Build the DTO
-		newGroceryStoreDto.groceryStoreId = groceryStore.groceryStoreId;
-		newGroceryStoreDto.address = address ?? new Address();
-		newGroceryStoreDto.groceryStoreName = groceryStoreName?.name ?? '';
+			const groceryStoreName = groceryStoreNames.find(
+				name => name.groceryStoreNameId === groceryStore.groceryStoreNameId
+			);
+			// Build the DTO
+			newGroceryStoreDto.groceryStoreId = groceryStore.groceryStoreId;
+			newGroceryStoreDto.address = address ?? new Address();
+			newGroceryStoreDto.groceryStoreName = groceryStoreName?.name ?? '';
 
-		if (buildAisles) {
-			const allAisles = (await verifyCacheInController(CacheKeys.AllAisles, findManyAisles)) as Aisle[];
+			if (buildAisles) {
+				const allAisles = (await verifyCacheInController(CacheKeys.AllAisles, findManyAisles)) as Aisle[];
 
-			const aisles = allAisles.filter(aisle => aisle.groceryStoreId === groceryStore.groceryStoreId);
-			const aislesDto: AisleDto[] = [];
-			for await (const aisle of aisles) {
-				const combos = await AislesGroceryItemCategories.findAll({
-					where: {
-						aisleId: aisle.aisleId
-					}
-				});
-				const minifiedCombos = combos.map(combo => combo.groceryItemCategoryId);
-				const aisleDto = await buildAisleDto(aisle, minifiedCombos);
-				aislesDto.push(aisleDto);
+				const aisles = allAisles.filter(aisle => aisle.groceryStoreId === groceryStore.groceryStoreId);
+				const aislesDto: AisleDto[] = [];
+				for await (const aisle of aisles) {
+					const combos = await AislesGroceryItemCategories.findAll({
+						where: {
+							aisleId: aisle.aisleId
+						}
+					});
+					const minifiedCombos = combos.map(combo => combo.groceryItemCategoryId);
+					const aisleDto = await buildAisleDto(aisle, minifiedCombos);
+					aislesDto.push(aisleDto);
+				}
+				newGroceryStoreDto.aisles = [...aislesDto];
 			}
-			newGroceryStoreDto.aisles = [...aislesDto];
+		} catch (error) {
+			console.error(error);
 		}
-
 		return newGroceryStoreDto;
 	};
 

@@ -106,6 +106,7 @@
 
 	const handleSelectName = (storeName: GroceryStoreName) => {
 		newGroceryStore.value.name = storeName.name;
+		createGroceryStoreStore.selectedStoreNameId = storeName.groceryStoreNameId;
 
 		viewToggles.value.screenToShow = CreateGroceryStoreScreens.Address;
 	};

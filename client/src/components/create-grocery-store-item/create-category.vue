@@ -1,7 +1,12 @@
 <template>
 	<h2>Add Category</h2>
 	<form>
-		<InputText id="new-category-input" v-model.trim="newCategory.name" class="mr-2" />
+		<InputText
+			id="new-category-input"
+			placeholder="Use Plural Form, ie Spices"
+			v-model.trim="newCategory.name"
+			class="mr-2"
+		/>
 		<p v-show="matchFound" class="invalid-message mt-1">This category already exists.</p>
 		<Button
 			label="Save Category"

@@ -3,6 +3,7 @@ import { useGroceryStoreNameController } from '../../controllers/grocery-store-n
 import { Express, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import { useVerifyCache } from '@cache/init-verify-cache';
+import { ResultType, initPostResult } from '@models/dto';
 
 export const useGroceryStoreNameApi = (app: Express, cache: NodeCache) => {
 	const { createGroceryStoreName, findGroceryStoreName, findManyGroceryStoreNames, updateGroceryStoreName } =
@@ -50,13 +51,20 @@ export const useGroceryStoreNameApi = (app: Express, cache: NodeCache) => {
 			console.log('body', req.body);
 			const groceryStoreName = req.body.name;
 
+			const postResult = initPostResult();
 			let newName: GroceryStoreName | undefined;
 			try {
 				newName = await createGroceryStoreName(groceryStoreName);
-				res.send(newName);
+
+				if (newName) {
+					postResult.resultType = ResultType.Success;
+					postResult.value = newName;
+				}
+				res.send(postResult);
 			} catch (error) {
 				console.error(error);
-				res.send('There was an error creating the grocery store name. Please try again later.');
+				postResult.errorMessages.push('There was an error creating the grocery store name. Please try again later.');
+				res.send(postResult);
 			}
 		});
 	};

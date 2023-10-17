@@ -1,26 +1,22 @@
+import { type Address, initBlankAddress } from './address';
 import type { Aisle } from './aisle';
 
 export interface GroceryStore {
-	addressLineOne: string;
-	addressLineTwo: string;
+	address: Address;
+
 	aisles: Aisle[];
-	city: string;
 	groceryStoreId: number;
-	name: string;
-	state: string;
-	zip?: number;
+	groceryStoreName: string;
 }
 
 export const initGroceryStore = (store?: GroceryStore): GroceryStore => {
 	if (!store) {
 		store = {} as GroceryStore;
-		store.addressLineOne = '';
-		store.addressLineTwo = '';
+
+		store.address = initBlankAddress();
 		store.aisles = [];
-		store.city = '';
 		store.groceryStoreId = 0;
-		store.name = '';
-		store.state = '';
+		store.groceryStoreName = '';
 	}
 
 	return store;

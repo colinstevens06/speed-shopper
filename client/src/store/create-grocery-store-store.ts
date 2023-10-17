@@ -6,12 +6,13 @@ import {
 	type GroceryItemCategory,
 	type GroceryStore,
 	type GroceryStoreName,
-	initAddress
+	initAddressForSubmission
 } from '@models/store-builder';
 import { groceryStoreService } from '@services/grocery-store-service';
 import type { ApiResponse } from '@models/services';
 import type { CreateGroceryStoreViewToggles } from '@models/views';
 import { groceryItemCategoryService } from '@services/grocery-store-builder';
+import { ActionType, ResultType, type PostResult } from '@models/dto';
 
 class CreateGroceryStoreStore extends Store<CreateGroceryStoreState> {
 	constructor() {
@@ -52,26 +53,31 @@ class CreateGroceryStoreStore extends Store<CreateGroceryStoreState> {
 		this.state.groceryStoreNameOptions = names;
 	}
 
-	async postGroceryStoreName(name: string): Promise<GroceryStoreName> {
+	async postGroceryStoreName(name: string): Promise<PostResult<GroceryStoreName>> {
 		const response = await groceryStoreService.postGroceryStoreName(name);
-		this.state.groceryStoreNameOptions.push(response);
+
+		if (response.resultType === ResultType.Success) {
+			const groceryStoreName = response.value;
+			this.state.groceryStoreNameOptions.push(groceryStoreName);
+		}
 		return response;
 	}
 
 	async submitNewGroceryStore() {
 		// Build the DTO
 		const dto: { address: Address; nameId: number; aisles: Aisle[] } = {
-			address: initAddress(
-				this.newGroceryStore.addressLineOne,
-				this.newGroceryStore.city,
-				this.newGroceryStore.state,
-				this.newGroceryStore.zip ?? -1,
-				this.newGroceryStore.addressLineTwo
+			address: initAddressForSubmission(
+				this.state.newGroceryStore.addressLineOne,
+				this.state.newGroceryStore.city,
+				this.state.newGroceryStore.state,
+				this.state.newGroceryStore.zip ?? -1,
+				this.state.newGroceryStore.addressLineTwo
 			),
-			nameId: this.selectedStoreNameId,
-			aisles: this.newGroceryStore.aisles
+			nameId: this.state.selectedStoreNameId,
+			aisles: this.state.newGroceryStore.aisles
 		};
 		const response = await groceryStoreService.postNewGroceryStore(dto);
+
 		return response;
 	}
 }

@@ -4,3 +4,4 @@ export * from './grocery-item-category-controller';
 export * from './grocery-item-controller';
 export * from './grocery-store-controller';
 export * from './grocery-store-name-controller';
+export * from './user-controller';

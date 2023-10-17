@@ -12,7 +12,7 @@
 	],
 	"scripts": {
 		"startserver": "yarn backend:prestartserver && node -e \"console.log('Building server...')\" && backend:ts-node ./build/server.js",
-		"format": "yarn workspace backend format && yarn workspace client format"
+		"format": "yarn workspace backend format && yarn workspace client format",
+		"tsc: build": "yarn startserver"
 	}
 }
-

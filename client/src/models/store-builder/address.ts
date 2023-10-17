@@ -7,7 +7,7 @@ export interface Address {
 	updateby?: string;
 }
 
-export const initAddress = (
+export const initAddressForSubmission = (
 	lineOne: string,
 	city: string,
 	state: string,
@@ -25,4 +25,15 @@ export const initAddress = (
 	address.updateby = updateby ?? '';
 
 	return address;
+};
+
+export const initBlankAddress = (): Address => {
+	const state = {} as Address;
+
+	state.addressLineOne = '';
+	state.city = '';
+	state.state = '';
+	state.zip = -1;
+
+	return state;
 };

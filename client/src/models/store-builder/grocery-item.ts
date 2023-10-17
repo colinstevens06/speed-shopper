@@ -5,6 +5,8 @@ export interface GroceryItem extends SequelizeBase {
 	groceryItemId?: number;
 	name: string;
 	groceryItemCategoryId?: number;
+	selectedForList?: boolean; // Used to track if the item should be on the shopping list
+	isInCart: boolean; // Used to track item while shopping
 }
 
 export const initGroceryItem = (initItem?: GroceryItem): GroceryItem => {
@@ -12,6 +14,7 @@ export const initGroceryItem = (initItem?: GroceryItem): GroceryItem => {
 
 	initItem.categories = [];
 	initItem.name = '';
+	initItem.isInCart = false;
 
 	return initItem;
 };

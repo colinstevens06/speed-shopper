@@ -1,0 +1,22 @@
+.grocery-store {
+	&__card {
+		transition: 0.5s;
+		&:hover {
+			cursor: pointer;
+			background-color: $grocery-blue-hover;
+		}
+	}
+}
+
+.shopping-list {
+	label {
+		font-weight: normal;
+	}
+
+	&__item {
+		& > .p-checkbox-checked + label {
+			text-decoration: line-through;
+		}
+	}
+}
+

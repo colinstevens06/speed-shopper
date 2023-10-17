@@ -1,13 +1,18 @@
 <template>
 	<div class="speed-shopper-main">
 		<Toast position="top-right" group="main-toast" />
-		<nav class="p-2 text-center text-2xl">
-			<h1>
-				<template v-if="route.name === 'adminHome'">Speed Shopper</template>
-				<template v-else><router-link :to="{ name: 'adminHome' }" class="m-0 p-0">Speed Shopper</router-link></template>
-			</h1>
+		<nav class="p-2 text-2xl">
+			<div class="main-container flex justify-content-between align-items-center">
+				<h1>
+					<template v-if="route.name === 'home'">Speed Shopper</template>
+					<template v-else>
+						<router-link :to="{ name: 'home' }" class="m-0 p-0">Speed Shopper</router-link>
+					</template>
+				</h1>
+				<div id="user-button"></div>
+			</div>
 		</nav>
-		<main class="main-container mt-3 py-5" :class="props.class">
+		<main class="main-container mt-3 py-5 bg-white border-round-sm" :class="props.class">
 			<slot />
 		</main>
 	</div>
@@ -20,11 +25,15 @@
 	import Button from 'primevue/button';
 	import Toast from 'primevue/toast';
 	import { messageStore } from '@store/message-store';
-	import { watchEffect } from 'vue';
+	import { onMounted, watchEffect } from 'vue';
 	import { useToast } from 'primevue/usetoast';
-	import { useRoute } from 'vue-router';
+	import { useRoute, useRouter } from 'vue-router';
+	import { initUserFromClerk } from '@models/user';
+	import { authStore } from '@store/auth-store';
+	import { clerk } from '@utils/clerk';
 
 	const route = useRoute();
+	const router = useRouter();
 
 	const toast = useToast();
 
@@ -36,4 +45,23 @@
 			messageStore.clearToastMessage();
 		}
 	});
+
+	const initClerkElements = () => {
+		const signUpElement = document.getElementById('user-button');
+
+		if (signUpElement) {
+			clerk?.mountUserButton(signUpElement as HTMLDivElement);
+		}
+	};
+
+	onMounted(() => {
+		initClerkElements();
+	});
+
+	const init = async () => {
+		await authStore.loadUser();
+		// authStore.setIsAuthorized();
+	};
+
+	await init();
 </script>

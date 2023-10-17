@@ -3,6 +3,7 @@ import { useGroceryItemController } from '../../controllers/grocery-item-control
 import { Express, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import { GroceryItem } from '@db/models/grocery-item';
+import { ResultType, initPostResult } from '@models/dto';
 
 export const useGroceryItemApi = (app: Express, cache: NodeCache) => {
 	const { createGroceryItem, findGroceryItem, findManyGroceryItems, updateGroceryItem } =
@@ -48,8 +49,15 @@ export const useGroceryItemApi = (app: Express, cache: NodeCache) => {
 			const name = req.body.name;
 			const id = req.body.id;
 			try {
+				const postResult = initPostResult();
+
 				const newGroceryItem = await createGroceryItem(name, id);
-				res.send(newGroceryItem);
+				if (newGroceryItem) {
+					postResult.resultType = ResultType.Success;
+					postResult.value = newGroceryItem;
+				}
+
+				res.send(postResult);
 			} catch (error) {
 				console.error(error);
 			}

@@ -23,6 +23,7 @@
 	import { ref } from 'vue';
 	import AddressDisplay from '@components/create-grocery-store/address-display.vue';
 	import AislesDisplay from '@components/create-grocery-store/aisles-display.vue';
+	import { messageStore } from '@store/message-store';
 
 	const { aisles, categoryOptions, newGroceryStore, createGroceryStoreStore, viewToggles } =
 		useCreateGroceryStoreState();
@@ -37,11 +38,10 @@
 		submitInProgress.value = true;
 
 		const response = await createGroceryStoreStore.submitNewGroceryStore();
-
 		if (response) {
-			//
+			messageStore.setSuccessMessage('Grocery store created successfully!');
 		} else {
-			//
+			messageStore.setDangerMessage('Save failed. Please try again later.');
 		}
 		submitInProgress.value = false;
 	};

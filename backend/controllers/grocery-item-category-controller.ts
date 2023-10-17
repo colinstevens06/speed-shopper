@@ -2,10 +2,17 @@ import { useVerifyCache } from '@cache/init-verify-cache';
 import { CacheKeys } from '@models/cache';
 import NodeCache from 'node-cache';
 import { GroceryItemCategory } from '../db/models/grocery-item-category';
+import { GroceryItemGroceryItemCategories } from '@db/models/grocery-item-grocery-item-categories';
+import { GroceryItemCategoryDto, initGroceryItemCategoryDto } from '@models/dto';
+import { GroceryItem } from '@db/models/grocery-item';
+import { useGroceryItemController } from '.';
 
 // import { GroceryItemCategory } from '../db/models/grocery-item-category';
 export const useGroceryItemCategoryController = (cache: NodeCache) => {
 	const { clearCacheKey, verifyCacheInController } = useVerifyCache(cache);
+
+	const { createGroceryItem, findGroceryItem, findManyGroceryItems, updateGroceryItem } =
+		useGroceryItemController(cache);
 
 	/**
 	 * POST
@@ -49,9 +56,32 @@ export const useGroceryItemCategoryController = (cache: NodeCache) => {
 	 * GET allGroceryItemCategories
 	 */
 	const findManyGroceryItemCategories = async () => {
-		let allGroceryItemCategories = [] as GroceryItemCategory[];
+		const allGroceryItemCategories = [] as GroceryItemCategoryDto[];
 		try {
-			allGroceryItemCategories = await GroceryItemCategory.findAll();
+			const allCategories = await GroceryItemCategory.findAll();
+			const allGroceryItems = (await verifyCacheInController(
+				CacheKeys.AllGroceryItems,
+				await findManyGroceryItems
+			)) as GroceryItem[];
+
+			for await (const category of allCategories) {
+				const categoryItemCombo = await GroceryItem.findAll({
+					where: {
+						groceryItemCategoryId: category.groceryItemCategoryId
+					}
+				});
+
+				const groceryItemsForCategory: GroceryItem[] = [];
+
+				for await (const catItemCombo of categoryItemCombo) {
+					const groceryItem = allGroceryItems.find(grocItem => grocItem.groceryItemId === catItemCombo.groceryItemId);
+					if (groceryItem) groceryItemsForCategory.push(groceryItem);
+				}
+
+				// got those items
+				const newCat = initGroceryItemCategoryDto(category, groceryItemsForCategory);
+				allGroceryItemCategories.push(newCat);
+			}
 		} catch (error: any) {
 			console.error(error);
 		}

@@ -3,6 +3,7 @@ import { useGroceryItemCategoryController } from '../../controllers/grocery-item
 import { Express, Request, Response } from 'express';
 import { GroceryItemCategory } from '@db/models/grocery-item-category';
 import { useVerifyCache } from '@cache/init-verify-cache';
+import { GroceryItemCategoryDto, ResultType, initPostResult } from '@models/dto';
 
 export const useGroceryItemCategoryApi = (app: Express, cache: NodeCache) => {
 	const {
@@ -22,7 +23,13 @@ export const useGroceryItemCategoryApi = (app: Express, cache: NodeCache) => {
 	 */
 	const getGroceryItemCategory = () => {
 		return app.get(`${baseUrl}/:id`, async (req: Request, res: Response) => {
-			const address = await findGroceryItemCategory(parseInt(req.params.id));
+			let address;
+			try {
+				address = await findGroceryItemCategory(parseInt(req.params.id));
+			} catch (error) {
+				console.error(error);
+				throw new Error('There was an error while getting the grocery item. Please try again later.');
+			}
 			res.send(address);
 		});
 	};
@@ -33,7 +40,7 @@ export const useGroceryItemCategoryApi = (app: Express, cache: NodeCache) => {
 	 */
 	const getAllGroceryItemCategories = () => {
 		return app.get(`${baseUrl}`, verifyCacheInApi, async (req: Request, res: Response) => {
-			let allGroceryItemCategories: GroceryItemCategory[] = [];
+			let allGroceryItemCategories: GroceryItemCategoryDto[] = [];
 
 			try {
 				allGroceryItemCategories = await findManyGroceryItemCategories();
@@ -41,6 +48,7 @@ export const useGroceryItemCategoryApi = (app: Express, cache: NodeCache) => {
 				res.send(allGroceryItemCategories);
 			} catch (error) {
 				console.error(error);
+				throw new Error('There was an error retrieving the grocery item categories. Please try again later.');
 			}
 		});
 	};
@@ -52,8 +60,15 @@ export const useGroceryItemCategoryApi = (app: Express, cache: NodeCache) => {
 		return app.post(`${baseUrl}`, async (req: Request, res: Response) => {
 			const name = req.body.name;
 			try {
+				const postResult = initPostResult();
 				const newGroceryItemCategory = await createGroceryItemCategory(name);
-				res.send(newGroceryItemCategory);
+
+				if (newGroceryItemCategory) {
+					postResult.resultType = ResultType.Success;
+					postResult.value = newGroceryItemCategory;
+				}
+
+				res.send(postResult);
 			} catch (error) {
 				console.error(error);
 			}

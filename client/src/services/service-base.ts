@@ -29,6 +29,9 @@ export default class ServiceBase {
 		const response = this.repo
 			.post<ApiResponse>(path, data)
 			.then(response => {
+				// TODO: if error, intercept it here
+
+				// Else, I'll assume sucess and pass the value from the PostResult
 				return response.data;
 			})
 			.catch((error: any) => {

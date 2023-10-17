@@ -3,14 +3,14 @@ import { useApiRoutes } from './routes/use-api-routes';
 import cors from 'cors';
 import NodeCache from 'node-cache';
 import { useVerifyCache } from '@cache/init-verify-cache';
+import 'dotenv/config';
+import { config as configDotenv } from 'dotenv';
+import { resolve } from 'path';
 
 const cache = new NodeCache({ stdTTL: 900 }); // 15 minutes
+configDotenv({ path: './.env' });
 const dev = process.env.NODE_ENV === 'development'; // TODO: figure this out
-console.log(dev);
-
-// import 'dotenv/config';
-// import { config as configDotenv } from 'dotenv';
-// import { resolve } from 'path';
+console.log('Dev? ' + dev);
 
 const app = express();
 

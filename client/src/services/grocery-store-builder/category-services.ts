@@ -1,3 +1,4 @@
+import type { PostResult } from '@models/dto';
 import type { GroceryItemCategory } from '@models/store-builder';
 import ServiceBase from '@services/service-base';
 
@@ -5,7 +6,7 @@ class GroceryItemCategoryService extends ServiceBase {
 	//
 	baseUrl = `/grocery-item-categories`;
 
-	async create(name: string): Promise<GroceryItemCategory> {
+	async create(name: string): Promise<PostResult<GroceryItemCategory>> {
 		const dto = { name };
 		return await this.post(this.baseUrl, dto);
 	}

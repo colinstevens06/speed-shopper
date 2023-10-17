@@ -1,0 +1,35 @@
+<template>
+	<Transition name="fade" mode="out-in">
+		<div v-if="screenToShow === ShoppingScreens.ShoppingLanding" key="loading">
+			<ShoppingLanding />
+		</div>
+		<div v-else-if="screenToShow === ShoppingScreens.SelectGroceryItems" key="select-items">
+			<SelectGroceryItems />
+		</div>
+		<div v-else-if="screenToShow === ShoppingScreens.SelectGroceryStore" key="select-store">
+			<SelectGroceryStore />
+		</div>
+		<div v-else-if="screenToShow === ShoppingScreens.ConfirmShoppingList" key="confirm-list">
+			<ConfirmShoppingList />
+		</div>
+	</Transition>
+</template>
+
+<script setup lang="ts">
+	// Select Ingredients
+
+	// Select a grocery store
+
+	import { useShoppingStore } from '@composables/use-shopping-store';
+	import { ShoppingScreens } from '@models/views';
+	import ShoppingLanding from './shopping-landing.vue';
+	import SelectGroceryItems from './select-grocery-items.vue';
+	import SelectGroceryStore from './select-grocery-store.vue';
+	import ConfirmShoppingList from './confirm-shopping-list.vue';
+
+	const { screenToShow, shoppingStore } = useShoppingStore();
+
+	const handleCreateShoppingListClick = () => {
+		// switch to show the ingredients list
+	};
+</script>

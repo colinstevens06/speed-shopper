@@ -2,6 +2,110 @@
 
 Going to leave myself notes here so when I go for long period of time without coding, I can remember when I left off.
 
+## 10-15-2023
+
+Have chipped away last couple days w/o updating here, but now I'm building the list in order. You can select grocery items, a grocery store, and then it will output a grocery list in the order of that specific grocery store.
+
+User is prompted:
+
+- save and go shopping now
+- save for later
+
+Thinking this step should be moved up in the user flow so the steps are
+
+- I want to build a shopping list
+- I select grocery items
+  - Go shopping now?
+  - Save for later?
+- If shopping now, select grocery store
+- Output the list
+
+NEXT STEPS
+
+- DB tables and API for saving a grocery list
+  - list will be item focused and store agnostic
+- front-end store/service to save the list
+
+## 10-9-2023
+
+I worked on selecting a grocery store and building the list. Going to pick up with that again next time.
+
+## 10-8-2023
+
+I've been working on the 'Go Shopping' view ... currently working on the 'Select Grocery Store' screen ... I've got a prototype for the 'Select Ingredients' screen
+
+Idea is user can next:
+
+- select grocery store
+- build the list in the order you'll go through the store
+
+## 10-5-2023
+
+First time coding in a while. Create Grocery Store isn't working yet. Failed (and crashed) during create process.
+
+The issue is I already created an address during a previous failed attempt, so i need to iron out the address check portion of the create process.
+
+**Error: null value in column "addressid" of relation "grocerystores" violates not-null constraint**
+
+10:55 update
+
+Skins are down 30-20 in fourth quarter... and in coding, I successfully created a grocery store ... 4 actually, 1st is junk and then 2-4 are duplicates created while debugging some errors. But seems like it's all working. I updated the table so it will look for unique address/store name combo. maybe only 1 store per address? probably a safe bet. but now I can do a 'go shopping' ui (or start it at least)
+
+NEXT TIME: start with /src/components/shopping/select-grocery-items.vue
+
+## 9-23-2023
+
+Auth seems to be working really well... just wrote to the user table, so now i think i'll be able to start saving additional information for the user
+
+I'm writing to the User table successfully and can get from the user table. can probably add that to the server cache, too
+
+todo:
+groceryStores_users table
+
+## 9-21-2023
+
+Clerk is implemented at a low level and is working well. Seems like a keeper. I have 3 components implemented:
+
+- user button
+- sign up button
+- sign in button
+
+Since Clerk has its own components, I just had to put these in the appropriate place.
+
+Now I'm going to create a User table to manage user data for the app.
+
+Fiished up working on the User table ... created most of the API and added the table to the DB ... now just trying ot work on doing the findOrCreate
+
+## 9-20-2023
+
+Making progress on implementing Clerk ... I need to check how to put get the key from the env.local file but everything else is straightforward
+
+Setting is up with the JS SDK and it's working nicely ... not completey ideal, but it's getting what i need and I can use their components, which is most important for me right now for getting the auth setup
+
+What I finished (need to think things over and make sure it's all real tight, but it's preliminarily working):
+
+- sign up and sign in buttons
+  - should hide the sign in button if the user is signed in
+- route guard to look at if user isAuthenticated
+  - should redirect back to login page if not
+
+Todo:
+
+- add other components from Clerk, like the topbar user menu link, which would allow user to sign out
+- user table in PostGres + other tables for the shopping lists
+
+## 9-19-2023
+
+BIG SUCCESS! Did the first create of a groceryStore in the DB and it worked the first time ... woooo!!! I'm going to take the time to reevaluate my next steps.
+
+Brain dump: the createGroceryStore UI leaves something to be desired but that's okay - the goal was to get it working and it is working!!! I know have a grocery store in the DB and the DTO it sent back after the success was a beautiful grocery store. Now I should be able to GET a grocery store and the API looks good for that...
+
+It would be a good idea to look at how I want to handle POST results ... because I don't really care about the error handling in GETs as much as I care about the error handling in a POST ... and, at the same time, I want to know when I have a successful post
+
+NEXT TIME (ended up doing late night work on this and finished):
+
+- Continue with PostResult backend and frontend (more frontend is done than backend so maybe start at backend)s
+
 ## 9-18-2023
 
 Have not coded for a while... proposed to Michelle on 9-9-2023!!! We are so excited. Now, I'm back to some coding.
