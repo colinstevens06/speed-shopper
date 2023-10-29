@@ -24,7 +24,8 @@ ShoppingList.init(
 			defaultValue: 'admin' // TODO: get info from auth
 		},
 		userId: {
-			type: DataTypes.NUMBER
+			type: DataTypes.NUMBER,
+			field: 'userid'
 		}
 	},
 	{ sequelize }

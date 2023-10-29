@@ -6,6 +6,7 @@ import {
 	useGroceryStoreApi,
 	useGroceryStoreNameApi,
 	useNodeCache,
+	useShoppingListApi,
 	useUserApi
 } from './api';
 import { Express } from 'express';
@@ -19,5 +20,6 @@ export const useApiRoutes = (app: Express, cache: NodeCache) => {
 	useGroceryItemCategoryApi(app, cache);
 	useGroceryStoreNameApi(app, cache);
 	useGroceryStoreApi(app, cache);
+	useShoppingListApi(app, cache);
 	useUserApi(app, cache);
 };

@@ -121,7 +121,7 @@ export const useGroceryStoreControllers = (nodeCache: NodeCache) => {
 		const newGroceryStoreDto = initGroceryStoreDto();
 		try {
 			// Find address and name
-			const addresses = (await verifyCacheInController(CacheKeys.AllAddresses, await findManyAddresses)) as Address[];
+			const addresses = (await verifyCacheInController(CacheKeys.AllAddresses, findManyAddresses)) as Address[];
 
 			const address = addresses.find(address => address.addressId === groceryStore.addressId);
 

@@ -60,12 +60,11 @@ export const useGroceryStoreNameApi = (app: Express, cache: NodeCache) => {
 					postResult.resultType = ResultType.Success;
 					postResult.value = newName;
 				}
-				res.send(postResult);
 			} catch (error) {
 				console.error(error);
 				postResult.errorMessages.push('There was an error creating the grocery store name. Please try again later.');
-				res.send(postResult);
 			}
+			res.send(postResult);
 		});
 	};
 

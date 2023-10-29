@@ -2,6 +2,12 @@
 
 Going to leave myself notes here so when I go for long period of time without coding, I can remember when I left off.
 
+## 10-22-2023
+
+- Have chipped away on this over the last week. Tonight I finished putting together the API for saving a shopping list and returning all the users shopping lists
+
+**NEXT:** finish the front end (UI through store/service calls). Need to think through the long-term workflow.
+
 ## 10-15-2023
 
 Have chipped away last couple days w/o updating here, but now I'm building the list in order. You can select grocery items, a grocery store, and then it will output a grocery list in the order of that specific grocery store.

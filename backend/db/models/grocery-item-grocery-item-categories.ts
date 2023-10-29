@@ -7,7 +7,7 @@ export class GroceryItemGroceryItemCategories extends Model<
 > {
 	declare groceryItemCategoryId: CreationOptional<number>;
 	declare groceryItemId: CreationOptional<number>;
-	declare updateby: string;
+	declare updateby?: string;
 }
 
 GroceryItemGroceryItemCategories.init(

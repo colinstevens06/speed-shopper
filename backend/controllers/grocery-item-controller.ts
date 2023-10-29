@@ -54,6 +54,24 @@ export const useGroceryItemController = (cache: NodeCache) => {
 		return allGroceryItems;
 	};
 
+	const getAllGroceryItemsByIds = async (groceryItemIds: number[]) => {
+		// Get all the groceryItems so we can iterate over them
+		const groceryItems = (await verifyCacheInController(
+			CacheKeys.AllGroceryItems,
+			findManyGroceryItems
+		)) as GroceryItem[];
+
+		const matchedGroceryItems: GroceryItem[] = [];
+
+		for await (const id of groceryItemIds) {
+			const groceryItem = groceryItems.find(grocItem => grocItem.groceryItemId === id);
+			// Add to the DTO's list of groceryItems
+			if (groceryItem) matchedGroceryItems.push(groceryItem);
+		}
+
+		return matchedGroceryItems;
+	};
+
 	/**
 	 * PUT
 	 * @param id number - unique id
@@ -82,6 +100,7 @@ export const useGroceryItemController = (cache: NodeCache) => {
 		createGroceryItem,
 		findGroceryItem,
 		findManyGroceryItems,
+		getAllGroceryItemsByIds,
 		updateGroceryItem
 	};
 };

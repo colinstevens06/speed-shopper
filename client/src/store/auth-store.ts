@@ -3,6 +3,7 @@ import { Store } from './store';
 import { initUserFromClerk, type User } from '@models/user';
 import { authService } from '@services/auth-service';
 import { clerk } from '@utils/clerk';
+import type { UserResource } from '@clerk/types';
 
 class AuthStore extends Store<AuthStoreState> {
 	constructor() {
@@ -54,7 +55,7 @@ class AuthStore extends Store<AuthStoreState> {
 				await clerk.load();
 			}
 
-			const clerkUser = await clerk?.user;
+			const clerkUser = (await clerk?.user) as UserResource | undefined | null;
 			if (clerkUser) {
 				const user = initUserFromClerk(
 					clerkUser.id,
