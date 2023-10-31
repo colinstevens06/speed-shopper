@@ -31,9 +31,9 @@ export const useVerifyCache = (cache: NodeCache) => {
 		try {
 			if (cache.has(key)) {
 				console.log(`*** Getting cached data in Controller layer for key ${key}`);
-				return JSON.parse(cache.get(key)!);
+				return cache.get(key);
 			} else {
-				return await callback;
+				return await callback();
 			}
 		} catch (err: any) {
 			throw new Error(err);

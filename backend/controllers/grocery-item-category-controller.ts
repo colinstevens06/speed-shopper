@@ -61,7 +61,7 @@ export const useGroceryItemCategoryController = (cache: NodeCache) => {
 			const allCategories = await GroceryItemCategory.findAll();
 			const allGroceryItems = (await verifyCacheInController(
 				CacheKeys.AllGroceryItems,
-				await findManyGroceryItems
+				findManyGroceryItems
 			)) as GroceryItem[];
 
 			for await (const category of allCategories) {
