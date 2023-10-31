@@ -14,6 +14,7 @@ import './styles/index.scss';
 import { initUserFromClerk } from '@models/user';
 import { authStore } from '@store/auth-store';
 import { clerk } from '@utils/clerk';
+import { VueCookieNext } from 'vue-cookie-next';
 
 (async () => {
 	const app = createApp(App);
@@ -35,6 +36,9 @@ import { clerk } from '@utils/clerk';
 
 	// 	authStore.setUser(user);
 	// }
+	app.use(VueCookieNext);
+
+	VueCookieNext.config({ expire: '7d' });
 
 	app.use(router);
 	app.use(PrimeVue);

@@ -12,11 +12,11 @@ Here's at a glance the roadmap
   - Update the 'updatedby' properties to populate from logged-in user
 - JWT Cookies for Auth
 - DB Auth
-- Server Auth
+- Server Auth / HTTP
 - Build Shopping List (DB/UI)
   - UI ✓ (mostly done)
-  - DB
-  - API
+  - DB ✓
+  - API ✓
 - Deploy site
   - Deploy DB
   - Deploy Server

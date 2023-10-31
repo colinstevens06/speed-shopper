@@ -4,10 +4,17 @@ import { initUserFromClerk, type User } from '@models/user';
 import { authService } from '@services/auth-service';
 import { clerk } from '@utils/clerk';
 import type { UserResource } from '@clerk/types';
+import { VueCookieNext } from 'vue-cookie-next';
 
 class AuthStore extends Store<AuthStoreState> {
 	constructor() {
 		super(initAuthStoreState);
+	}
+
+	private jwtTokenKey = '__clerk_db_jwt';
+
+	get clerkToken(): string {
+		return VueCookieNext.getCookie(this.jwtTokenKey);
 	}
 
 	get isAdmin(): boolean {
@@ -56,7 +63,9 @@ class AuthStore extends Store<AuthStoreState> {
 			}
 
 			const clerkUser = (await clerk?.user) as UserResource | undefined | null;
+
 			if (clerkUser) {
+				// Set speed shopper user
 				const user = initUserFromClerk(
 					clerkUser.id,
 					clerkUser.primaryEmailAddress?.emailAddress ?? '',

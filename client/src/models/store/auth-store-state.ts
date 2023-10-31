@@ -1,6 +1,7 @@
 import type { User } from '@models/user';
 
 export interface AuthStoreState {
+	clerkToken?: string;
 	isAdmin: boolean;
 	isAuthenticated: boolean;
 	user?: User;

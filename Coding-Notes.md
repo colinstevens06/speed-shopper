@@ -2,6 +2,30 @@
 
 Going to leave myself notes here so when I go for long period of time without coding, I can remember when I left off.
 
+## 10-30-2023
+
+I have JWT in the auth store and it's working ... using clerk jwt ... have it in the service base in the Auth header ... need to now do the backend for it
+
+Clerk sets the cookie in the browser - I just have to get it and use it
+
+## 10-29-2023
+
+I'm learning more about Auth browser --> server --> browser --> etc
+
+I'm learning about JWT. I think it won't be that bad and that I can implement it with Clerk...
+
+I need to do the initIterceptors on the service base. That'll add a token each time from the frontend
+
+I'm going to match my server JWT key with the Clerk JWT key ... and then it should work
+
+On the backend, I'll have to add the JWT verification [like in this video](https://www.youtube.com/watch?v=mbsmsi7l3r4)
+
+More to come...
+
+FWIW: clerk has a node integration but I don't need to use that ... I would only use that if I had a custom UI for logging in, but since I'm using Clerk's UI, I don't need to do it on the server side ... I just need to be able to send the token ... and I can get a token from Clerk on the frontend and set it ...
+
+And I can set that token as a cookie so that I go for that first ...
+
 ## 10-22-2023
 
 - Have chipped away on this over the last week. Tonight I finished putting together the API for saving a shopping list and returning all the users shopping lists
