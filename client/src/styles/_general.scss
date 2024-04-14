@@ -1,0 +1,53 @@
+label {
+	font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 0.5rem 0;
+}
+
+html {
+	min-height: 100%;
+	background-color: $html-background-color;
+	background-image: linear-gradient(to bottom right, $background-gradient-top-left, $background-gradient-bottom-right);
+	font-size: 16px;
+}
+
+// *:not([class^='p-']) {
+body,
+nav,
+main,
+div {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+p,
+ul,
+div,
+span,
+a {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p {
+	line-height: 1.5;
+}
+
+ul {
+	padding-left: 2rem;
+	li {
+		padding-bottom: 0.25rem;
+	}
+}
+
+.invalid-message {
+	font-size: small;
+	color: rgba(155, 0, 0, 0.95);
+}
