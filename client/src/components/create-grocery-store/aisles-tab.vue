@@ -2,7 +2,7 @@
 	<div>
 		<h2 class="text-xl">Aisles</h2>
 		<p>Add aisle for this store. You can reorder them after adding.</p>
-		<h3 class="text-lg mt-3">{{ newGroceryStore.name }}</h3>
+		<h3 class="text-lg mt-3">{{ newGroceryStore.groceryStoreName }}</h3>
 		<AddressDisplay />
 		<div class="grid mt-3">
 			<!-- Aisle Creation -->

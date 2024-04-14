@@ -3,6 +3,7 @@
 		<h1>Select Grocery Items</h1>
 		<Button label="Select Store" @click="handleSelectStoreClick" />
 	</div>
+	<ShoppingListName />
 	<ScrollPanel style="width: 100%; height: 80vh">
 		<template v-for="category in shoppingStore.allGroceryItemCategories" :key="category.groceryItemCategoryId">
 			<template v-if="category.groceryItems?.length">
@@ -32,6 +33,7 @@
 	const { screenToShow, shoppingStore } = useShoppingStore();
 
 	import ToggleButton from 'primevue/togglebutton';
+	import ShoppingListName from './shopping-list-name.vue';
 
 	const handleSelectStoreClick = () => {
 		shoppingStore.viewToggles.screenToShow = ShoppingScreens.SelectGroceryStore;

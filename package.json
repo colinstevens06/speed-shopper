@@ -2,8 +2,8 @@
 	"name": "speed-shopper",
 	"packageManager": "yarn@3.3.1",
 	"devDependencies": {
-		"eslint": "^8.22.0",
-		"prettier": "^2.7.1",
+		"eslint": "^8.57.0",
+		"prettier": "^2.8.8",
 		"typescript": "~4.7.4"
 	},
 	"workspaces": [
@@ -11,7 +11,8 @@
 		"backend"
 	],
 	"scripts": {
-		"startserver": "yarn backend:prestartserver && node -e \"console.log('Building server...')\" && backend:ts-node ./build/server.js",
+		"startserver": "yarn workspace backend startserver",
+		"startclient": "yarn workspace client dev",
 		"format": "yarn workspace backend format && yarn workspace client format",
 		"tsc: build": "yarn startserver"
 	}

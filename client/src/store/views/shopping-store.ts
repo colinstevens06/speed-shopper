@@ -7,11 +7,13 @@ import {
 	type ShoppingViews,
 	type GroceryItemCategory,
 	initGroceryItemCategory,
-	type ShoppingUserSelections
+	type NewShoppingList
 } from '@models/index';
 import type { ShoppingList } from '@models/user';
 import { groceryItemCategoryService } from '@services/grocery-store-builder';
 import { groceryStoreService } from '@services/grocery-store-service';
+import { shoppingListService } from '@services/shopping-list-service';
+import { authStore } from '@store/auth-store';
 import { Store } from '@store/store';
 
 class ShoppingStore extends Store<ShoppingStoreState> {
@@ -31,7 +33,11 @@ class ShoppingStore extends Store<ShoppingStoreState> {
 		return this.state.allGroceryStores;
 	}
 
-	get userSelections(): ShoppingUserSelections {
+	get shoppingLists(): ShoppingList[] {
+		return this.state.shoppingLists;
+	}
+
+	get userSelections(): NewShoppingList {
 		return this.state.userSelections;
 	}
 
@@ -73,6 +79,23 @@ class ShoppingStore extends Store<ShoppingStoreState> {
 		if (response) {
 			this.state.allGroceryStores = response;
 		}
+	}
+
+	async loadShoppingLists() {
+		const clerkUserId = authStore.user?.clerkUserId ?? '';
+		const response = await shoppingListService.getShoppingLists(clerkUserId);
+		if (response) {
+			this.state.shoppingLists = [...response];
+		}
+	}
+
+	async postShoppingList(name: string, ids: number[]) {
+		const response = await shoppingListService.postShoppingList(name, ids);
+		return response;
+	}
+
+	setScreenToShow(screen: ShoppingScreens) {
+		this.state.viewToggles.screenToShow = screen;
 	}
 }
 

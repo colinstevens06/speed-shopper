@@ -3,7 +3,6 @@ import type { Aisle } from './aisle';
 
 export interface GroceryStore {
 	address: Address;
-
 	aisles: Aisle[];
 	groceryStoreId: number;
 	groceryStoreName: string;

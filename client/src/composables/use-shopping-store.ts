@@ -8,5 +8,7 @@ export const useShoppingStore = () => {
 
 	const screenToShow = computed(() => shoppingStore.viewToggles.screenToShow);
 
-	return { groceryStoreItems, screenToShow, shoppingStore };
+	const shoppingLists = computed(() => shoppingStore.shoppingLists);
+
+	return { groceryStoreItems, screenToShow, shoppingLists, shoppingStore };
 };

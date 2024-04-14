@@ -63,15 +63,20 @@ class CreateGroceryStoreStore extends Store<CreateGroceryStoreState> {
 		return response;
 	}
 
+	removeAisleFromList(aisleOrder: number): void {
+		const index = this.state.newGroceryStore.aisles.findIndex(aisle => aisle.aisleOrder === aisleOrder);
+		this.state.newGroceryStore.aisles.splice(index, 1);
+	}
+
 	async submitNewGroceryStore() {
 		// Build the DTO
 		const dto: { address: Address; nameId: number; aisles: Aisle[] } = {
 			address: initAddressForSubmission(
-				this.state.newGroceryStore.addressLineOne,
-				this.state.newGroceryStore.city,
-				this.state.newGroceryStore.state,
-				this.state.newGroceryStore.zip ?? -1,
-				this.state.newGroceryStore.addressLineTwo
+				this.state.newGroceryStore.address.addressLineOne,
+				this.state.newGroceryStore.address.city,
+				this.state.newGroceryStore.address.state,
+				this.state.newGroceryStore.address.zip ?? -1,
+				this.state.newGroceryStore.address.addressLineTwo
 			),
 			nameId: this.state.selectedStoreNameId,
 			aisles: this.state.newGroceryStore.aisles

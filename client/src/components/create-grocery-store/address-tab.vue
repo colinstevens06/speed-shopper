@@ -1,24 +1,24 @@
 <template>
 	<div class="p-fluid">
 		<h2 class="text-xl">Address</h2>
-		<p class="mb-3 py-1">What's the address for {{ newGroceryStore.name }}?</p>
+		<p class="mb-3 py-1">What's the address for {{ newGroceryStore.groceryStoreName }}?</p>
 		<div class="grid">
 			<div class="col-12 md:col-6">
 				<label for="addresslineone">Address Line 1</label>
-				<InputText v-model="newGroceryStore.addressLineOne" type="text" id="addresslineone" />
+				<InputText v-model="newGroceryStore.address.addressLineOne" type="text" id="addresslineone" />
 			</div>
 			<div class="col-12 md:col-6">
 				<label>Address Line 2</label>
-				<InputText v-model="newGroceryStore.addressLineTwo" type="text" />
+				<InputText v-model="newGroceryStore.address.addressLineTwo" type="text" />
 			</div>
 			<div class="col-12 md:col-6">
 				<label>City</label>
-				<InputText v-model="newGroceryStore.city" type="text" />
+				<InputText v-model="newGroceryStore.address.city" type="text" />
 			</div>
 			<div class="col-12 md:col-6">
 				<label>State</label>
 				<Dropdown
-					v-model="newGroceryStore.state"
+					v-model="newGroceryStore.address.state"
 					:options="states"
 					option-value="abbreviation"
 					option-label="abbreviation"
@@ -26,7 +26,7 @@
 			</div>
 			<div class="col-12 md:col-6">
 				<label>Zip</label>
-				<InputNumber v-model="newGroceryStore.zip" :use-grouping="false" placeholder="xxxxx" />
+				<InputNumber v-model="newGroceryStore.address.zip" :use-grouping="false" placeholder="xxxxx" />
 			</div>
 		</div>
 		<div>
@@ -50,10 +50,10 @@
 
 	const addressComplete = computed(
 		() =>
-			newGroceryStore.value.addressLineOne &&
-			newGroceryStore.value.city &&
-			newGroceryStore.value.state &&
-			newGroceryStore.value.zip
+			newGroceryStore.value.address.addressLineOne &&
+			newGroceryStore.value.address.city &&
+			newGroceryStore.value.address.state &&
+			newGroceryStore.value.address.zip
 	);
 
 	const handleContinueClick = () => {

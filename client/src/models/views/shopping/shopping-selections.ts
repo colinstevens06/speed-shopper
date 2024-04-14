@@ -1,13 +1,15 @@
-export interface ShoppingUserSelections {
+export interface NewShoppingList {
 	groceryItems: number[];
 	groceryStoreId: number;
+	shoppingListName: string;
 }
 
-export const initShoppingUserSelections = (state?: ShoppingUserSelections): ShoppingUserSelections => {
-	state ??= {} as ShoppingUserSelections;
+export const initNewShoppingList = (state?: NewShoppingList): NewShoppingList => {
+	state ??= {} as NewShoppingList;
 
 	state.groceryItems = [];
 	state.groceryStoreId = -1;
+	state.shoppingListName = new Date().toDateString();
 
 	return state;
 };

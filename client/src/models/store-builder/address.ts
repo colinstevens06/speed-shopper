@@ -3,7 +3,7 @@ export interface Address {
 	addressLineTwo?: string;
 	city: string;
 	state: string;
-	zip: number;
+	zip?: number;
 	updateby?: string;
 }
 
@@ -33,7 +33,6 @@ export const initBlankAddress = (): Address => {
 	state.addressLineOne = '';
 	state.city = '';
 	state.state = '';
-	state.zip = -1;
 
 	return state;
 };

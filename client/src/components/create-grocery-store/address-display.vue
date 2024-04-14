@@ -1,12 +1,12 @@
 <template>
 	<p>
-		{{ newGroceryStore.addressLineOne }}
-		<span v-if="newGroceryStore.addressLineTwo">
+		{{ newGroceryStore.address.addressLineOne }}
+		<span v-if="newGroceryStore.address.addressLineTwo">
 			<br />
-			{{ newGroceryStore.addressLineTwo }}
+			{{ newGroceryStore.address.addressLineTwo }}
 		</span>
 		<br />
-		{{ newGroceryStore.city }}, {{ newGroceryStore.state }} {{ newGroceryStore.zip }}
+		{{ newGroceryStore.address.city }}, {{ newGroceryStore.address.state }} {{ newGroceryStore.address.zip }}
 	</p>
 </template>
 

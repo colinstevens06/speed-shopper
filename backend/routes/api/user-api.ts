@@ -3,6 +3,7 @@ import { Express, Request, Response } from 'express';
 import { useUserController } from '@controllers/index';
 import { User } from '@db/models/user';
 import { PostUserDto, ResultType, initPostResult } from '@models/dto';
+const jwt = require('jsonwebtoken');
 
 export const useUserApi = (app: Express, cache: NodeCache) => {
 	const baseUrl = '/api/user';
@@ -15,6 +16,7 @@ export const useUserApi = (app: Express, cache: NodeCache) => {
 			let user;
 			try {
 				user = await findUserByClerkId(clerkId);
+				jwt.sign(JSON.stringify(user), process.env.CLERK_SECRET_KEY);
 			} catch (error) {
 				console.error(error);
 			}

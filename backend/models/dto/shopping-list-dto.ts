@@ -6,12 +6,18 @@ export interface ShoppingListDto {
 	name: string;
 	updateby: string;
 	userId: number;
-	items: GroceryItem[];
+	groceryItems: GroceryItem[];
+}
+
+export interface NewShoppingListDto {
+	name: string;
+	userId: number;
+	groceryItemIds: number[];
 }
 
 export interface ShoppingListPostDto {
 	name: string;
-	userId: number;
+	clerkUserId: string;
 	groceryItemIds: number[];
 }
 
@@ -22,8 +28,7 @@ export const initDtoFromShoppingList = (list: ShoppingList): ShoppingListDto => 
 	dto.name = list.name;
 	dto.updateby = list.updateby;
 	dto.userId = list.userId;
-	dto.items = [];
+	dto.groceryItems = [];
 
 	return dto;
 };
-

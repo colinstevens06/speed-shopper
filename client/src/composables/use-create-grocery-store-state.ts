@@ -1,4 +1,4 @@
-import type { CreateGroceryStoreState } from '@models/store/create-grocery-store-state';
+// import type { CreateGroceryStoreState } from '@models/store/create-grocery-store-state';
 import type CreateGroceryStoreStore from '@store/create-grocery-store-store';
 import { computed, inject } from 'vue';
 

@@ -76,4 +76,3 @@ export const useShoppingListBuilder = () => {
 
 	return { createShoppingList, getSelectedGroceryItems, getOrderedShoppingList };
 };
-

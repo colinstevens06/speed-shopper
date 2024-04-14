@@ -13,7 +13,8 @@ ShoppingList.init(
 		shoppingListId: {
 			type: DataTypes.INTEGER,
 			autoIncrement: true,
-			primaryKey: true
+			primaryKey: true,
+			field: 'shoppinglistid'
 		},
 		name: {
 			type: DataTypes.STRING,
@@ -30,4 +31,3 @@ ShoppingList.init(
 	},
 	{ sequelize }
 );
-

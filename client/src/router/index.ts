@@ -54,9 +54,13 @@ router.beforeResolve(() => {
 
 router.beforeEach((to, from) => {
 	if (to.meta.authRequired) {
-		if (!authStore.isAuthenticated) {
-			return { name: 'home' };
-		}
+		// TODO: figure out the auth on the routes
+		// authStore.setIsAuthorized();
+		// debugger;
+		// if (!authStore.isAuthenticated) {
+		// 	return { name: 'home' };
+		// }
+		return;
 	} else {
 		return;
 	}

@@ -18,4 +18,3 @@ export const initGroceryItemCategoryDto = (cat: GroceryItemCategory, items: Groc
 
 	return state;
 };
-

@@ -10,9 +10,9 @@ Here's at a glance the roadmap
   - first getting the error handling improved, then make it so the table for Grocery Item needs unique combo of name and categoryId (so can have 2 of same name but different categoryId)
 - Auth (Clerk)
   - Update the 'updatedby' properties to populate from logged-in user
-- JWT Cookies for Auth
-- DB Auth
-- Server Auth / HTTP
+- JWT Cookies for Auth ✓
+- DB Auth (when going to Prod)
+- Server Auth / HTTP ✓
 - Build Shopping List (DB/UI)
   - UI ✓ (mostly done)
   - DB ✓

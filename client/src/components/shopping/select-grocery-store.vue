@@ -15,13 +15,19 @@
 			</div>
 		</div>
 	</div>
+	<Button label="Update Grocery Items" class="p-button-outlined mt-3" @click="handleBackClick" />
 </template>
 
 <script setup lang="ts">
 	import { useShoppingStore } from '@composables/use-shopping-store';
 	import { ShoppingScreens } from '@models/index';
+	import Button from 'primevue/button';
 
 	const { screenToShow, shoppingStore } = useShoppingStore();
+
+	const handleBackClick = () => {
+		shoppingStore.setScreenToShow(ShoppingScreens.SelectGroceryItems);
+	};
 
 	const handleCardClick = (groceryStoreId: number) => {
 		shoppingStore.viewToggles.screenToShow = ShoppingScreens.ConfirmShoppingList;

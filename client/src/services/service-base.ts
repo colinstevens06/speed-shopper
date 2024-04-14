@@ -20,7 +20,7 @@ export default class ServiceBase {
 			.then(response => {
 				return response.data;
 			})
-			.catch((error: any) => {
+			.catch((_error: any) => {
 				return defaultValue;
 			});
 		// @ts-ignore

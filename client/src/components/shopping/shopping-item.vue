@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-	/* __placeholder__ */
-	import type { Aisle, GroceryItem } from '@models/index';
-	import { computed, ref } from 'vue';
+	import type { Aisle } from '@models/index';
 
 	import Checkbox from 'primevue/checkbox';
 
@@ -35,4 +33,3 @@
 		</template>
 	</ul>
 </template>
-

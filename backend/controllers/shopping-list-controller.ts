@@ -36,7 +36,7 @@ export const useShoppingListController = (nodeCache: NodeCache) => {
 				}
 				// Build the dto
 				shoppingListDto = initDtoFromShoppingList(newShoppingList);
-				shoppingListDto.items = await getAllGroceryItemsByIds(groceryItemIds);
+				shoppingListDto.groceryItems = await getAllGroceryItemsByIds(groceryItemIds);
 			}
 		} catch (error) {
 			console.error(error);
@@ -70,7 +70,7 @@ export const useShoppingListController = (nodeCache: NodeCache) => {
 
 					const groceryItems = await getAllGroceryItemsByIds(groceryItemIds);
 
-					shoppingListDto.items = [...groceryItems];
+					shoppingListDto.groceryItems = [...groceryItems];
 				}
 				// Add to the list of DTOs
 				shoppingListDtos.push(shoppingListDto);
@@ -87,4 +87,3 @@ export const useShoppingListController = (nodeCache: NodeCache) => {
 		findAllShoppingListsForUser
 	};
 };
-

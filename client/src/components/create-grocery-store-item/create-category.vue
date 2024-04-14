@@ -31,6 +31,9 @@
 			/>
 		</div>
 	</template>
+	<template v-else>
+		<ProgressSpinner style="height: 50px; width: 50px" />
+	</template>
 </template>
 
 <script setup lang="ts">
@@ -40,6 +43,7 @@
 	import { computed, ref } from 'vue';
 	import InputText from 'primevue/inputtext';
 	import Button from 'primevue/button';
+	import ProgressSpinner from 'primevue/progressspinner';
 
 	const { newCategory, newGroceryItem, categoryOptions, groceryItemOptions, createGroceryStoreItemStore } =
 		useCreateGroceryItemStoreState();

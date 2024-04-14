@@ -36,6 +36,7 @@ class CreateGroceryStoreItemStore extends Store<CreateGroceryStoreItemState> {
 	async getAllOptions() {
 		const groceryItems = await groceryStoreService.getAllGroceryItems();
 		const categories = await groceryItemCategoryService.getAll();
+
 		this.state.groceryItemOptions = groceryItems.sort((a, b) => a.name.localeCompare(b.name));
 		this.state.categoryOptions = categories.sort((a, b) => a.name.localeCompare(b.name));
 	}

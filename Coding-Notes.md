@@ -2,6 +2,67 @@
 
 Going to leave myself notes here so when I go for long period of time without coding, I can remember when I left off.
 
+# 4-11-2024
+
+Worked in authenticate-token.ts middleware ... and in there I'm setting `res.locals.clerkUserId` to the clerkUserId so that I can access it later and hit the user table and include that user's email / user name on the `updateby` properties
+
+Next thing to do would be populating the property in the appropriate controllers (probably only controller files)
+
+Here's the (site I was referencing)[https://stackoverflow.com/questions/71296347/get-the-current-user-from-anywhere-in-nodejs]
+
+# 4-10-2024
+
+Looking at how I can access the user info from the backend server. Using the clerk-node package... but I also have the user table for the app... and that has whether that user is an admin or not
+
+# 3-23-2024
+
+Have not done shit w/ project since new year begain. LFG had a sick show at 8x10 though on 3/9 and it was worth it.
+
+Today is the first time I've looked at this in a while and my main thoughts are:
+
+- It's time to explore a Dev DB.
+  - Right now I have a local DB and this will do me no good as I populate data. I can still hook up to a Dev DB locally.
+  - After creating a Dev DB, I'll need to run some scripts to create tables
+  - After creating the tables, I'll be able to use the UI locally on the Dev DB
+- Next big to-do really is going through the workflow and reminding myself where I am / what still need to be done. Also need to read through these notes to see where the UI left off.
+
+After reading notes from mid-10/2023 to now, I think my assessment is on point: move to a remove DB is priority, then continue work on the UI / workflows. Looks like in October I had ideas for changing the flow for someone shopping/creating lists.
+
+Heroku might be a great place to do the DB hosting.
+
+Other next thing to do: - Update the 'updatedby' properties to populate from logged-in user
+
+## 1-1-2024
+
+Got a bunch done the last couple days. Highlights:
+
+- API token security implemented
+- Can save shopping lists
+- Can reorder aisles when creating a grocery store
+
+Next: continue to refine the Shopping List workflow (click old list and have UI populate)
+
+## 12-28-2023
+
+First time looking at this in a long time... today I'm at the beach and have a whole day to code (starting at 10:40am) so going to see how I can catch up and see what I need to accomplish.
+
+Looking at the notes, it looks like I need to focus on the auth still... but I'm just going to play a bit of catchup to start.
+
+4:43: I just got the API auth to work -- took me all day. Here are the keys:
+
+- I wrote a custom middleware to use
+- Sending the bearer token
+- Using Clerk on backend to verify the token. If there is no token sent, it's going to 403. If there is no valid token, it'll send a 403
+
+6:22: just got the process.env files working in the server.js file the key is the order of the imports. Now I'm working on DB security, looking at this video: https://www.youtube.com/watch?v=j3QthxDrU6I but I think I basically have it and it'll be important when I go to to Prod because then I'll need to use a stronger connectionString to connect to the DB w/ a UN/PW combo but locally I'm just running on my local server so NBD
+
+NEXT:
+
+- Test and evaluate all of the workflows. See where the holes are.
+- Do the drag-n-drop for the new grocery store (done)
+- Be able to save a grocery list (done)
+- See recent grocery lists
+
 ## 10-30-2023
 
 I have JWT in the auth store and it's working ... using clerk jwt ... have it in the service base in the Auth header ... need to now do the backend for it
@@ -14,7 +75,7 @@ I'm learning more about Auth browser --> server --> browser --> etc
 
 I'm learning about JWT. I think it won't be that bad and that I can implement it with Clerk...
 
-I need to do the initIterceptors on the service base. That'll add a token each time from the frontend
+I need to do the initInterceptors on the service base. That'll add a token each time from the frontend
 
 I'm going to match my server JWT key with the Clerk JWT key ... and then it should work
 

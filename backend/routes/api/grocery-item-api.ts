@@ -1,15 +1,17 @@
 import { useVerifyCache } from '@cache/init-verify-cache';
 import { useGroceryItemController } from '../../controllers/grocery-item-controller';
-import { Express, Request, Response } from 'express';
+import { Express, NextFunction, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import { GroceryItem } from '@db/models/grocery-item';
 import { ResultType, initPostResult } from '@models/dto';
 
-export const useGroceryItemApi = (app: Express, cache: NodeCache) => {
+export const useGroceryItemApi = async (app: Express, cache: NodeCache) => {
 	const { createGroceryItem, findGroceryItem, findManyGroceryItems, updateGroceryItem } =
 		useGroceryItemController(cache);
 
 	const { verifyCacheInApi } = useVerifyCache(cache);
+
+	const user = app.locals.clerkUserId;
 
 	const baseUrl = '/api/grocery-items';
 

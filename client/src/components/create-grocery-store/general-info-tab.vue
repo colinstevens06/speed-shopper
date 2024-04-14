@@ -101,11 +101,11 @@
 	};
 
 	const handleBackToAdmin = () => {
-		router.push('/');
+		router.push({ name: 'adminHome' });
 	};
 
 	const handleSelectName = (storeName: GroceryStoreName) => {
-		newGroceryStore.value.name = storeName.name;
+		newGroceryStore.value.groceryStoreName = storeName.name;
 		createGroceryStoreStore.selectedStoreNameId = storeName.groceryStoreNameId;
 
 		viewToggles.value.screenToShow = CreateGroceryStoreScreens.Address;

@@ -24,9 +24,9 @@ ShoppingListGroceryItem.init(
 		},
 		updateby: {
 			type: DataTypes.STRING,
-			defaultValue: 'admin' // TODO: NEED THIS TO GET INFO FROM AUTH
+			defaultValue: 'admin', // TODO: NEED THIS TO GET INFO FROM AUTH,
+			field: 'updateby'
 		}
 	},
 	{ sequelize, tableName: 'shoppinglists_groceryitems' }
 );
-

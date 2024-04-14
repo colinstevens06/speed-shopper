@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h2 class="text-xl">Confirm Selections</h2>
-		<h3 class="text-lg mt-3">{{ newGroceryStore.name }}</h3>
+		<h3 class="text-lg mt-3">{{ newGroceryStore.groceryStoreName }}</h3>
 		<div class="mt-3">
 			<AddressDisplay />
 		</div>

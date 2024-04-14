@@ -18,7 +18,11 @@ html {
 	font-size: 16px;
 }
 
-* {
+// *:not([class^='p-']) {
+body,
+nav,
+main,
+div {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;

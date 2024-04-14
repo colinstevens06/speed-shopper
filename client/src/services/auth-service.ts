@@ -7,6 +7,8 @@ class AuthService extends ServiceBase {
 	async getUserByClerkId(id: string): Promise<User> {
 		return await this.get<User>(`/user?clerkId=${id}`);
 	}
+
+	// todo: this logic should probably happen in the store and not the service
 	async postNewUser() {
 		if (authStore.user) {
 			const userDto = {

@@ -12,6 +12,9 @@
 		<div v-else-if="screenToShow === ShoppingScreens.ConfirmShoppingList" key="confirm-list">
 			<ConfirmShoppingList />
 		</div>
+		<div v-else>
+			<ProgressSpinner style="height: 50px; width: 50px" />
+		</div>
 	</Transition>
 </template>
 
@@ -26,10 +29,7 @@
 	import SelectGroceryItems from './select-grocery-items.vue';
 	import SelectGroceryStore from './select-grocery-store.vue';
 	import ConfirmShoppingList from './confirm-shopping-list.vue';
+	import ProgressSpinner from 'primevue/progressspinner';
 
 	const { screenToShow, shoppingStore } = useShoppingStore();
-
-	const handleCreateShoppingListClick = () => {
-		// switch to show the ingredients list
-	};
 </script>

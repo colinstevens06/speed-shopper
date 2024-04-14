@@ -1,13 +1,15 @@
 import NodeCache from 'node-cache';
 import { Express, Request, Response } from 'express';
 import { useVerifyCache } from '@cache/init-verify-cache';
-import { ShoppingListDto, ShoppingListPostDto } from '@models/dto/shopping-list-dto';
+import { ShoppingListDto, NewShoppingListDto, ShoppingListPostDto } from '@models/dto/shopping-list-dto';
 import { useShoppingListController } from '@controllers/shopping-list-controller';
 import { ResultType, initPostResult } from '@models/index';
+import { useUserController } from '@controllers/user-controller';
 
 export const useShoppingListApi = (app: Express, cache: NodeCache) => {
 	const { verifyCacheInApi } = useVerifyCache(cache);
 	const { postShoppingList, findAllShoppingListsForUser } = useShoppingListController(cache);
+	const { createNewUser, findUserByClerkId } = useUserController(cache);
 
 	const baseUrl = '/api/shopping-lists';
 
@@ -20,11 +22,15 @@ export const useShoppingListApi = (app: Express, cache: NodeCache) => {
 
 			let newShoppingList: ShoppingListDto | undefined = undefined;
 			try {
-				newShoppingList = await postShoppingList(
-					newShoppingListDto.name,
-					newShoppingListDto.userId,
-					newShoppingListDto.groceryItemIds
-				);
+				// Get the user so we can use to the userId as the primary key
+				const user = await findUserByClerkId(newShoppingListDto.clerkUserId);
+				if (user) {
+					newShoppingList = await postShoppingList(
+						newShoppingListDto.name,
+						user.userId,
+						newShoppingListDto.groceryItemIds
+					);
+				}
 				postResult.resultType = ResultType.Success;
 				postResult.value = newShoppingList as ShoppingListDto;
 			} catch (error) {
@@ -38,12 +44,16 @@ export const useShoppingListApi = (app: Express, cache: NodeCache) => {
 	const getAllShoppingListsForUser = () => {
 		return app.get(`${baseUrl}`, verifyCacheInApi, async (req: Request, res: Response) => {
 			console.log('Attempting a GET for all Shopping Lists');
-			const userId = parseInt(req.body.userId);
+			const clerkUserId = req.query.clerkUserId as string;
+
 			let allShoppingLists: ShoppingListDto[];
 			try {
-				allShoppingLists = await findAllShoppingListsForUser(userId);
-				// Set cache?
-				res.send(allShoppingLists);
+				const user = await findUserByClerkId(clerkUserId);
+				if (user) {
+					allShoppingLists = await findAllShoppingListsForUser(user.userId);
+					// TODO: Set cache?
+					res.send(allShoppingLists);
+				}
 			} catch (error) {
 				console.error(error);
 			}
@@ -53,4 +63,3 @@ export const useShoppingListApi = (app: Express, cache: NodeCache) => {
 	createShoppingList();
 	getAllShoppingListsForUser();
 };
-
