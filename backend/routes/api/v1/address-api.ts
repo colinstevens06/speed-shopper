@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { useAddressController } from '../../controllers/address-controller';
+import { useAddressController } from '@controllers/address-controller';
 import { Express, Request, Response } from 'express';
 import { useVerifyCache } from '@cache/init-verify-cache';
 import { Address } from '@db/models/address';

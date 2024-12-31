@@ -18,4 +18,3 @@ class ShoppingListService extends ServiceBase {
 const shoppingListService = new ShoppingListService();
 
 export { shoppingListService, ShoppingListService };
-

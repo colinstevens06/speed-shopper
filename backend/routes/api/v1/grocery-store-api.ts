@@ -1,6 +1,6 @@
-import { GroceryStoreName } from '../../db/models/grocery-store-name';
-import { useGroceryStoreControllers } from '../../controllers/grocery-store-controller';
-import { useAddressController, useGroceryStoreNameController } from '../../controllers/index';
+import { GroceryStoreName } from '@db/models/grocery-store-name';
+import { useGroceryStoreControllers } from '@controllers/grocery-store-controller';
+import { useAddressController, useGroceryStoreNameController } from '@controllers/index';
 import { Express, Request, Response } from 'express';
 import { Address } from '@db/models/address';
 import { Aisle } from '@db/models/aisle';
