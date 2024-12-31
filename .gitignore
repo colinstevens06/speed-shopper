@@ -1,3 +1,5 @@
+backend/scripts/*
+
 .yarn/*
 .yarn/cache
 !.yarn/patches

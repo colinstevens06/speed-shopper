@@ -1,7 +1,5 @@
 # speed-shopper
 
- <!-- Speed Shopper notes -->
-
 - User can copy an aisle
   - Each aisle is unique to a store in the DB, but the user interface will allow the user to copy an aisle from another store and add it to a grocery store... and it'll write to the DB as a POST because it'll be a new aisl
 

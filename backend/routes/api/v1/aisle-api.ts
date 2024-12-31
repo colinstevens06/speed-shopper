@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { useAisleController } from '../../controllers/aisle-controller';
+import { useAisleController } from '@controllers/aisle-controller';
 import { Express, Request, Response } from 'express';
 import { useVerifyCache } from '@cache/init-verify-cache';
 import { Aisle } from '@db/models/aisle';

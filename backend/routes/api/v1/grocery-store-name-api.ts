@@ -1,5 +1,5 @@
-import { GroceryStoreName } from '../../db/models/grocery-store-name';
-import { useGroceryStoreNameController } from '../../controllers/grocery-store-name-controller';
+import { GroceryStoreName } from '@db/models/grocery-store-name';
+import { useGroceryStoreNameController } from '@controllers/grocery-store-name-controller';
 import { Express, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import { useVerifyCache } from '@cache/init-verify-cache';

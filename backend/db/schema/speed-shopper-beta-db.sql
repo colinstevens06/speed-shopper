@@ -4,15 +4,16 @@
 
 -- USE SpeedShopperBetaDb;
 
-CREATE TABLE GroceryStoreNames  (
+CREATE TABLE if not exists GroceryStoreNames  (
   groceryStoreNameId SERIAL PRIMARY KEY,
   "name" VARCHAR(100) NOT NULL,
   updatedAt TIMESTAMP NOT NULL,
   updateBy VARCHAR(100) NOT NULL,
+  createdAt TIMESTAMP NOT NULL,
   UNIQUE ("name")
 );
 
-CREATE TABLE Address (
+CREATE TABLE if not exists Addresses (
     addressId SERIAL PRIMARY KEY,
     addressLineOne VARCHAR(100) NOT NULL,
     addressLineTwo VARCHAR(100),
@@ -21,44 +22,50 @@ CREATE TABLE Address (
     zip INT,
     updatedAt TIMESTAMP NOT NULL,
     updateBy VARCHAR(100) NOT NULL,
+    createdAt TIMESTAMP NOT NULL,
     UNIQUE(addressLineOne, city, state)
 );
 
-CREATE TABLE GroceryStore (
+CREATE TABLE if not exists GroceryStores (
   groceryStoreId SERIAL PRIMARY KEY,
   addressId INT NOT NULL REFERENCES addresses(addressId),
   groceryStoreNameId INT NOT NULL REFERENCES groceryStoreNames(groceryStoreNameId),
   updatedAt TIMESTAMP NOT NULL,
-  updateBy VARCHAR(100) NOT NULL
+  updateBy VARCHAR(100) NOT NULL,
+  createdAt TIMESTAMP NOT NULL,
   UNIQUE (addressId, groceryStoreNameId)
 );
 
-CREATE TABLE GroceryItem (
-    groceryItemId SERIAL PRIMARY KEY,
-    "name" VARCHAR(100) NOT NULL,
-    updatedAt TIMESTAMP NOT NULL,
-    updateBy VARCHAR(100) NOT NULL,
-    UNIQUE("name")
-);
-
-CREATE TABLE GroceryItemCategory (
+CREATE TABLE if not exists GroceryItemCategories (
     groceryItemCategoryId SERIAL PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     updatedAt TIMESTAMP NOT NULL,
     updateBy VARCHAR(100) NOT NULL,
+    createdAt TIMESTAMP NOT NULL,
     UNIQUE("name")
 );
 
-CREATE TABLE Aisle (
+CREATE TABLE if not exists GroceryItems (
+    groceryItemId SERIAL PRIMARY KEY,
+    "name" VARCHAR(100) NOT NULL,
+    updatedAt TIMESTAMP NOT NULL,
+    updateBy VARCHAR(100) NOT NULL,
+    createdAt TIMESTAMP NOT NULL,
+    groceryItemCategoryId int REFERENCES groceryItemCategories(groceryItemCategoryId) NOT NULL,
+    UNIQUE("name")
+);
+
+CREATE TABLE if not exists Aisles (
     aisleId SERIAL PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     aisleOrder INT NOT NULL,
     groceryStoreId INT NOT NULL REFERENCES groceryStores(groceryStoreId) ON DELETE RESTRICT ON UPDATE CASCADE,
     updatedAt TIMESTAMP NOT NULL,
-    updateBy VARCHAR(100) NOT NULL
+    updateBy VARCHAR(100) NOT NULL,
+    createdAt TIMESTAMP NOT NULL
 );
 
-CREATE TABLE Users (
+CREATE TABLE if not exists Users (
   userId SERIAL PRIMARY KEY,
   clerkUserId VARCHAR(255) NOT NULL,
   firstName VARCHAR(100) NOT NULL,
@@ -69,21 +76,27 @@ CREATE TABLE Users (
   updatedAt TIMESTAMP with time zone NOT NULL,
   createdAt TIMESTAMP with time zone NOT NULL,
   UNIQUE (clerkUserId)
-)
+);
 
-CREATE TABLE Aisles_GroceryItem (
+CREATE TABLE if not exists Aisles_GroceryItems (
     aisleId INT NOT NULL REFERENCES aisles(aisleId),
-    groceryItemId INT NOT NULL REFERENCES groceryItems(groceryItemId),
+    groceryItemId INT NOT NULL REFERENCES groceryItems(groceryItemId) ON DELETE CASCADE ON UPDATE CASCADE,
+    updatedAt TIMESTAMP with time zone NOT NULL,
+    createdAt TIMESTAMP with time zone NOT NULL,
+    updateBy VARCHAR(100) NOT NULL,
     PRIMARY KEY(aisleId, groceryItemId)
 );
 
-CREATE TABLE Aisle_GroceryItemCategory (
+CREATE TABLE if not exists Aisles_GroceryItemCategories (
     aisleId INT NOT NULL REFERENCES aisles(aisleId),
     groceryItemCategoryId INT NOT NULL REFERENCES groceryItemCategories(groceryItemCategoryId),
+    updatedAt TIMESTAMP with time zone NOT NULL,
+    createdAt TIMESTAMP with time zone NOT NULL,
+    updateBy VARCHAR(100) NOT NULL,
     PRIMARY KEY(aisleId, groceryItemCategoryId)
 );
 
-CREATE TABLE GroceryItem_GroceryItemCategories (
+CREATE TABLE if not exists GroceryItem_GroceryItemCategories (
     groceryItemId INT NOT NULL REFERENCES groceryItems(groceryItemId) ON DELETE CASCADE ON UPDATE CASCADE,
     groceryItemCategoryId INT NOT NULL REFERENCES groceryItemCategories(groceryItemCategoryId) ON DELETE CASCADE ON UPDATE CASCADE,
     updatedAt TIMESTAMP with time zone NOT NULL,
@@ -99,21 +112,22 @@ create TABLE if not exists users_groceryStores (
     createdAt TIMESTAMP with time zone NOT NULL,
     updateBy VARCHAR(100) NOT NULL,
     Primary key (groceryStoreId, userid)
-)
+);
 
 CREATE TABLE if not exists shoppingLists (
   shoppingListId  SERIAL PRIMARY KEY,
   "name" VARCHAR(100) NOT NULL,
   updatedAt TIMESTAMP NOT NULL,
   updateBy VARCHAR(100) NOT NULL,
+  createdAt TIMESTAMP with time zone NOT NULL,
   userId INT NOT NULL REFERENCES users(userId) ON DELETE RESTRICT ON UPDATE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS shoppingLists_groceryItems (
   shoppingListId INT NOT NULL REFERENCES shoppingLists(shoppingListId) ON DELETE CASCADE ON UPDATE CASCADE,
   groceryItemId INT NOT NULL REFERENCES groceryItems(groceryItemId) ON DELETE CASCADE ON UPDATE CASCADE,
-      updatedAt TIMESTAMP with time zone NOT NULL,
-    createdAt TIMESTAMP with time zone NOT NULL,
-    updateBy VARCHAR(100) NOT NULL,
-    PRIMARY KEY (shoppingListId, groceryItemId)
-)
+  updatedAt TIMESTAMP with time zone NOT NULL,
+  createdAt TIMESTAMP with time zone NOT NULL,
+  updateBy VARCHAR(100) NOT NULL,
+  PRIMARY KEY (shoppingListId, groceryItemId)
+);

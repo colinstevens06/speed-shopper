@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { useGroceryItemCategoryController } from '../../controllers/grocery-item-category-controller';
+import { useGroceryItemCategoryController } from '@controllers/grocery-item-category-controller';
 import { Express, Request, Response } from 'express';
 import { GroceryItemCategory } from '@db/models/grocery-item-category';
 import { useVerifyCache } from '@cache/init-verify-cache';

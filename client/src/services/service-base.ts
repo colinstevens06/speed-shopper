@@ -4,6 +4,7 @@ import type { ApiResponse } from '@models/services';
 import { authStore } from '@store/auth-store';
 
 // const baseURL = '/api';
+// todo: this needs to be updated to hit a dynamic URL!
 const baseURL = 'http://localhost:3000/api';
 
 export default class ServiceBase {
